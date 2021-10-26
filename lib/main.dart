@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:road_wave_fm_ui/screens/home_screen.dart';
+import 'package:road_wave_fm_ui/screens/about_screen.dart';
+import 'package:road_wave_fm_ui/screens/list_screen.dart';
+import 'package:road_wave_fm_ui/screens/map_screen.dart';
+import 'package:road_wave_fm_ui/screens/search_screen.dart';
 import 'package:road_wave_fm_ui/style/theme.dart';
 
 void main() {
@@ -9,13 +12,18 @@ void main() {
 class RoadWaveFmApp extends StatelessWidget {
   const RoadWaveFmApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Road Wave FM',
       theme: appTheme,
-      home: const HomeScreen(title: 'Home'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SearchScreen(),
+        '/list': (context) => const ListScreen(),
+        '/map': (context) => const MapScreen(),
+        '/about': (context) => const AboutScreen(),
+      },
     );
   }
 }
