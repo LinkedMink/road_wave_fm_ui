@@ -40,7 +40,8 @@ class NavigationBar extends StatelessWidget {
           )
         ],
         onTap: (int index) {
-          Navigator.pushNamed(context, screenRoutes[Screen.values[index]]!);
+          Navigator.popAndPushNamed(
+              context, screenRoutes[Screen.values[index]]!);
         },
       ),
     );
