@@ -1,6 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
-@immutable
 class Document {
   final String id;
 

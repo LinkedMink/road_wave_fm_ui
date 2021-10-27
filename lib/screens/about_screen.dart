@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:road_wave_fm_ui/constants/screens.dart';
 import 'package:road_wave_fm_ui/widgets/navigation_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -10,17 +10,21 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('List'),
+        title: const Text('About'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // Navigate back to first screen when tapped.
-          },
-          child: const Text('Go back!'),
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Text('Work in progress'),
+          ElevatedButton(
+            child: const Text('Git Repo'),
+            onPressed: () {
+              launch('https://github.com/LinkedMink/road_wave_fm_ui');
+            },
+          ),
+        ],
       ),
-      bottomNavigationBar: const NavigationBar(selectedScreen: Screen.list),
+      bottomNavigationBar: const NavigationBar(selectedScreen: Screen.about),
     );
   }
 }
