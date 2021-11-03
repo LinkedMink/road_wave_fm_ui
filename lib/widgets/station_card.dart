@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:road_wave_fm_ui/models/station.dart';
+import 'package:road_wave_fm_ui/data/station.dart';
 import 'package:road_wave_fm_ui/style/theme.dart';
 
 class StationCard extends StatelessWidget {

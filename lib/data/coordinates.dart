@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class Coordinates {
   final double lat;
   final double lng;

@@ -1,13 +1,12 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:road_wave_fm_ui/models/format.dart';
+import 'package:road_wave_fm_ui/data/environment_config.dart';
+import 'package:road_wave_fm_ui/data/format.dart';
 
 class FormatService {
   static const String _formatPath = 'formats';
-  final String _apiBaseUrl;
-
-  const FormatService(this._apiBaseUrl);
+  final String _apiBaseUrl = EnvironmentConfig.instance.roadWaveFmApiBaseUrl;
 
   Future<List<Format>> getAll() async {
     var response =
