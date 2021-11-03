@@ -1,6 +1,8 @@
-import 'package:road_wave_fm_ui/models/coordinates.dart';
-import 'package:road_wave_fm_ui/models/document.dart';
+import 'package:flutter/foundation.dart';
+import 'package:road_wave_fm_ui/data/coordinates.dart';
+import 'package:road_wave_fm_ui/data/document.dart';
 
+@immutable
 class Station extends Document {
   final String callSign;
   final String protocol;
