@@ -8,8 +8,6 @@ class StationService {
   static const String _formatPath = 'formats';
   final String _apiBaseUrl = EnvironmentConfig.instance.roadWaveFmApiBaseUrl;
 
-  StationService();
-
   Future<List<Station>> get(
       double lat, double lng, List<String> formats) async {
     var response =

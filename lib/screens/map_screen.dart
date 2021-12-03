@@ -11,9 +11,9 @@ class MapScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Map'),
       ),
-      body: const Center(
-        child: Text('List'),
-      ),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const <Widget>[Text('Map')]),
       bottomNavigationBar: const NavigationBar(selectedScreen: Screen.map),
     );
   }
