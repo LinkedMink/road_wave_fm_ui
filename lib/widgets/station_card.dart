@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:road_wave_fm_ui/data/station.dart';
-import 'package:road_wave_fm_ui/style/theme.dart';
+import 'package:road_wave_fm_ui/constants/theme.dart';
+import 'package:road_wave_fm_ui/models/station_model.dart';
 
 class StationCard extends StatelessWidget {
-  final Station station;
+  final StationModel station;
 
   const StationCard({Key? key, required this.station}) : super(key: key);
 
