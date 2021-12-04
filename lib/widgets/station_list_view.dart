@@ -8,7 +8,7 @@ class StationListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var stationList = context.watch<StationListModel>();
+    final stationList = context.watch<StationListModel>();
     return ListView(
         children: stationList.stationModels
             .map((s) => StationCard(station: s))

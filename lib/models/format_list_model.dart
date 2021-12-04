@@ -23,14 +23,14 @@ class FormatListModel extends ChangeNotifier {
   List<String> get selectedFormatIds => _selectedFormatIds.toList();
 
   _loadFormats() async {
-    var preferences = await SharedPreferences.getInstance();
-    var formats =
+    final preferences = await SharedPreferences.getInstance();
+    final formats =
         preferences.get(describeEnum(Preference.formats)) as List<Format>?;
 
     if (formats != null) {
       _formats = formats;
 
-      var selectedFormatIds =
+      final selectedFormatIds =
           preferences.getStringList(describeEnum(Preference.selectedFormatIds));
       if (selectedFormatIds != null) {
         _selectedFormatIds.addAll(selectedFormatIds);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:road_wave_fm_ui/constants/screens.dart';
-import 'package:road_wave_fm_ui/widgets/navigation_bar.dart';
+import 'package:road_wave_fm_ui/widgets/app_bar_builder.dart';
 import 'package:road_wave_fm_ui/widgets/station_list_view.dart';
 
 class ListScreen extends StatelessWidget {
@@ -9,13 +8,10 @@ class ListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('List'),
-      ),
+      appBar: buildAppBar(context),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: const <Widget>[Text('List'), StationListView()]),
-      bottomNavigationBar: const NavigationBar(selectedScreen: Screen.list),
     );
   }
 }

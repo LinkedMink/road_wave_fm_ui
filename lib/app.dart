@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:road_wave_fm_ui/constants/providers.dart';
+import 'package:road_wave_fm_ui/constants/screens.dart';
 import 'package:road_wave_fm_ui/constants/theme.dart';
-import 'package:road_wave_fm_ui/screens/about_screen.dart';
-import 'package:road_wave_fm_ui/screens/list_screen.dart';
-import 'package:road_wave_fm_ui/screens/map_screen.dart';
-import 'package:road_wave_fm_ui/screens/search_screen.dart';
 
 class RoadWaveFmApp extends StatelessWidget {
   const RoadWaveFmApp({Key? key}) : super(key: key);
@@ -18,12 +15,8 @@ class RoadWaveFmApp extends StatelessWidget {
           title: 'Road Wave FM',
           theme: appTheme,
           initialRoute: '/',
-          routes: {
-            '/': (context) => const SearchScreen(),
-            '/list': (context) => const ListScreen(),
-            '/map': (context) => const MapScreen(),
-            '/about': (context) => const AboutScreen(),
-          },
+          routes: screenRoutes
+              .map((key, value) => MapEntry(value.name, value.factory)),
         ));
   }
 }

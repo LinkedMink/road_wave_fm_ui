@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:road_wave_fm_ui/constants/screens.dart';
-import '../constants/theme.dart';
+import 'package:road_wave_fm_ui/constants/theme.dart';
 
 class NavigationBar extends StatelessWidget {
   final Screen selectedScreen;
@@ -41,7 +41,7 @@ class NavigationBar extends StatelessWidget {
         ],
         onTap: (int index) {
           Navigator.popAndPushNamed(
-              context, screenRoutes[Screen.values[index]]!);
+              context, screenRoutes[Screen.values[index]]!.name);
         },
       ),
     );

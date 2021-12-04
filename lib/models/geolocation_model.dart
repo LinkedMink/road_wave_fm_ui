@@ -17,7 +17,7 @@ class GeolocationModel extends ChangeNotifier {
   Position? get currentLocation => _currentLocation;
 
   Future<GeolocationPrompt> enableTracking() async {
-    var serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
@@ -45,17 +45,19 @@ class GeolocationModel extends ChangeNotifier {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    var stream = Geolocator.getPositionStream(
+    final stream = Geolocator.getPositionStream(
         desiredAccuracy: _locationAccuracy,
         distanceFilter: _updateThresholdMeters);
     _locationSubscription = stream.listen(_updateLocation);
 
+    notifyListeners();
     return GeolocationPrompt.none;
   }
 
   Future<void> disableTracking() async {
     await _locationSubscription?.cancel();
     _locationSubscription = null;
+    notifyListeners();
   }
 
   _updateLocation(Position location) {
