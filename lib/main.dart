@@ -6,7 +6,7 @@ import 'package:road_wave_fm_ui/data/environment_config.dart';
 
 void main() {
   if (bool.hasEnvironment(envVarNames[EnvVar.environmentId]!)) {
-    var envId = Environment.values.firstWhere(
+    final envId = Environment.values.firstWhere(
         (e) =>
             describeEnum(e) ==
             String.fromEnvironment(envVarNames[EnvVar.environmentId]!),

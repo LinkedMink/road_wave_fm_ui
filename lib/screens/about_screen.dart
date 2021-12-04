@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:road_wave_fm_ui/constants/screens.dart';
-import 'package:road_wave_fm_ui/widgets/navigation_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:road_wave_fm_ui/models/app_package_model.dart';
+import 'package:road_wave_fm_ui/widgets/app_bar_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -8,23 +9,25 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appPackage = context.watch<AppPackageModel>();
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('About'),
-      ),
+      appBar: buildAppBar(context, title: 'About'),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Text('Work in progress'),
+          Text('Version: ${appPackage.version}'),
+          Text('Build: ${appPackage.buildNumber}'),
+          const Text(
+              'This application is a work in progress. Visit our repository to contribute and report issues.'),
           ElevatedButton(
-            child: const Text('Git Repo'),
+            child: const Text('Github'),
             onPressed: () {
               launch('https://github.com/LinkedMink/road_wave_fm_ui');
             },
           ),
         ],
       ),
-      bottomNavigationBar: const NavigationBar(selectedScreen: Screen.about),
     );
   }
 }

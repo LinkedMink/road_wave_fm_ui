@@ -12,12 +12,12 @@ class SearchLocationModel extends ChangeNotifier {
 
   listenGeolocationUpdate(GeolocationModel model) {
     model.addListener(() {
-      var position = model.currentLocation;
+      final position = model.currentLocation;
       if (position == null) {
         return;
       }
 
-      var query = SearchQuery(position.latitude, position.longitude,
+      final query = SearchQuery(position.latitude, position.longitude,
           formatListModel.selectedFormatIds);
 
       if (query != _currentQuery) {

@@ -10,14 +10,14 @@ class StationService {
 
   Future<List<Station>> get(
       double lat, double lng, List<String> formats) async {
-    var response =
+    final response =
         await http.get(Uri.parse(_apiBaseUrl + StationService._formatPath));
 
     if (response.statusCode != 200) {
       throw Exception('Failed to retrieve formats');
     }
 
-    var data = jsonDecode(response.body) as List<Map<String, dynamic>>;
+    final data = jsonDecode(response.body) as List<Map<String, dynamic>>;
     return data.map((d) => Station.fromJson(d)).toList(growable: false);
   }
 }

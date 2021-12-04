@@ -1,4 +1,5 @@
 import 'package:provider/provider.dart';
+import 'package:road_wave_fm_ui/models/app_package_model.dart';
 import 'package:road_wave_fm_ui/models/format_list_model.dart';
 import 'package:road_wave_fm_ui/models/geolocation_model.dart';
 import 'package:road_wave_fm_ui/models/serach_location_model.dart';
@@ -7,6 +8,11 @@ import 'package:road_wave_fm_ui/services/format_service.dart';
 import 'package:road_wave_fm_ui/services/station_service.dart';
 
 final appProviders = [
+  ChangeNotifierProvider<AppPackageModel>(create: (context) {
+    final appPackageModel = AppPackageModel();
+    appPackageModel.initialize();
+    return appPackageModel;
+  }),
   Provider(create: (context) => FormatService()),
   Provider(create: (context) => StationService()),
   ChangeNotifierProxyProvider<FormatService, FormatListModel>(
