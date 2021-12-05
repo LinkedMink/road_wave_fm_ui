@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:road_wave_fm_ui/data/format.dart';
 
+// ignore: must_be_immutable
 class FormatModel extends Format with ChangeNotifier {
   bool _isSelected;
 

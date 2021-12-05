@@ -1,26 +1,58 @@
 # Contributing
 
-## Setup
+## Submission Process
 
-### Config Files
+### Engage
+
+- Discuss
+- Open Issue
+
+### Develop Branch
+
+- hotfix
+- feature
+- main
+
+### Release
+
+- Pull Request
+- Internal Deployment
+- Documentation
+- Public Deployment
+
+## Developer Setup
+
+### API Config
 
 Edit: [api.properties](/android/api.properties)
 
-```sh
+```properties
 google.mapsApiKey=<value>
+```
+
+### Deploy Config
+
+Generate publish keys
+
+```sh
+keytool -genkey -v -keystore /Users/<username>/.keys/android-keystore.p12 -storetype pkcs12 -keyalg RSA -keysize 2048 -validity 10000 -alias dev
 ```
 
 Edit: [key.properties](/android/key.properties)
 
-```sh
+```properties
 storePassword=<password>
 keyPassword=<password>
-keyAlias=upload
-storeFile=/home/username/.keys/android.p12
+keyAlias=dev
+storeFile=/Users/<username>/.keys/android-keystore.p12
 ```
 
-## Build
+### Commands
+
 ```sh
+# Build
 flutter build appbundle
 flutter build apk --split-per-abi
+# Test
+flutter test --reporter expanded --coverage
 ```
