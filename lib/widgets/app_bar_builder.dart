@@ -1,10 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:road_wave_fm_ui/constants/screens.dart';
-import 'package:road_wave_fm_ui/models/geolocation_model.dart';
+import 'package:road_wave_fm_ui/screens/action_screen.dart';
 
 AppBar buildAppBar(BuildContext context, {String title = 'Road Wave FM'}) {
-  final geolocation = context.watch<GeolocationModel>();
+  final actions = <Widget>[];
+  context.visitAncestorElements((element) {
+    final screenParent = element.widget as Semantics;
+    if (screenParent.child is ActionScreen) {
+      final screenActions =
+          (screenParent.child as ActionScreen).buildActionButtons(context);
+      actions.addAll(screenActions);
+    }
+
+    return false;
+  });
+
+  final popupItems = <PopupMenuEntry<AppBarMenuOption>>[];
+  final currentRoute = ModalRoute.of(context)?.settings.name;
+
+  if (currentRoute != appBarMenuOptionScreen[AppBarMenuOption.about]) {
+    popupItems.add(const PopupMenuItem<AppBarMenuOption>(
+      value: AppBarMenuOption.about,
+      child: Text('About'),
+    ));
+  }
+
+  if (popupItems.isNotEmpty) {
+    actions.add(PopupMenuButton<AppBarMenuOption>(
+        icon: const Icon(Icons.menu),
+        tooltip: "Open Menu",
+        onSelected: (AppBarMenuOption option) {
+          final targetRouteName = appBarMenuOptionScreen[option]!;
+          final route = ModalRoute.of(context);
+          if (route?.settings.name == targetRouteName) {
+            return;
+          }
+
+          Navigator.pushNamed(context, targetRouteName);
+        },
+        itemBuilder: (BuildContext context) => popupItems));
+  }
 
   return AppBar(
     leading: Navigator.canPop(context)
@@ -14,36 +49,6 @@ AppBar buildAppBar(BuildContext context, {String title = 'Road Wave FM'}) {
             onPressed: () => {Navigator.pop(context)})
         : null,
     title: Text(title),
-    actions: [
-      IconButton(
-          icon: const Icon(Icons.filter),
-          onPressed: () {
-            Navigator.pushNamed(context, screenRoutes[Screen.filter]!.name);
-          }),
-      IconButton(
-          icon: Icon(geolocation.isTrackingLocation
-              ? Icons.location_on
-              : Icons.location_off),
-          onPressed: () {
-            if (geolocation.isTrackingLocation) {
-              geolocation.disableTracking();
-            } else {
-              geolocation.enableTracking();
-            }
-          }),
-      PopupMenuButton<AppBarMenuOption>(
-          icon: const Icon(Icons.menu),
-          tooltip: "Menu",
-          onSelected: (AppBarMenuOption option) {
-            Navigator.pushNamed(context, appBarMenuOptionScreen[option]!);
-          },
-          itemBuilder: (BuildContext context) =>
-              <PopupMenuEntry<AppBarMenuOption>>[
-                const PopupMenuItem<AppBarMenuOption>(
-                  value: AppBarMenuOption.about,
-                  child: Text('About'),
-                ),
-              ])
-    ],
+    actions: actions,
   );
 }

@@ -25,13 +25,13 @@ class EnvironmentConfig {
     switch (id) {
       case Environment.local:
         return EnvironmentConfig(
-            id, "http://localhost:8081", "http://localhost:8080");
+            id, "http://localhost:8081/", "http://localhost:8080/");
       case Environment.dev:
-        return EnvironmentConfig(id, "https://roadwavefm.api.linkedmink.space",
-            "https://user.api.linkedmink.space");
+        return EnvironmentConfig(id, "https://roadwavefm.api.linkedmink.space/",
+            "https://user.api.linkedmink.space/");
       case Environment.prod:
-        return EnvironmentConfig(id, "https://roadwavefm.api.roadwavefm.com",
-            "https://user.api.roadwavefm.com");
+        return EnvironmentConfig(id, "https://roadwavefm.api.roadwavefm.com/",
+            "https://user.api.roadwavefm.com/");
     }
   }
 

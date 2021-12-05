@@ -14,6 +14,9 @@ class FormatGridView extends StatelessWidget {
             value: m, child: const FormatCheckbox()))
         .toList();
 
-    return GridView.count(crossAxisCount: 2, children: checkboxes);
+    return ListView(
+      children: checkboxes,
+      shrinkWrap: true,
+    );
   }
 }

@@ -7,8 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class FormatListModel extends ChangeNotifier {
   late FormatService _formatService;
-  late List<Format> _formats;
-  late List<FormatModel> _formatModels;
+  List<Format> _formats = [];
+  List<FormatModel> _formatModels = [];
   final Set<String> _selectedFormatIds = <String>{};
 
   FormatService get formatService => _formatService;
@@ -46,10 +46,12 @@ class FormatListModel extends ChangeNotifier {
   }
 
   _buildFormatModels() {
-    _formatModels = _formats
-        .map((f) => FormatModel(f, _selectedFormatIds.contains(f.id)))
-        .toList();
-    _formatModels.forEach(_listenFormatModel);
+    _formatModels = _formats.map((f) {
+      final model = FormatModel(f, _selectedFormatIds.contains(f.id));
+      _listenFormatModel(model);
+      return model;
+    }).toList();
+    _formatModels.sort((a, b) => a.name.compareTo(b.name));
     notifyListeners();
   }
 
