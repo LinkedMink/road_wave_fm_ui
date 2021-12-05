@@ -9,9 +9,11 @@ class StationListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stationList = context.watch<StationListModel>();
-    return ListView(
-        children: stationList.stationModels
-            .map((s) => StationCard(station: s))
-            .toList(growable: false));
+    final cards = stationList.stationModels
+        .map((s) =>
+            ChangeNotifierProvider.value(value: s, child: const StationCard()))
+        .toList(growable: false);
+
+    return ListView(children: cards, shrinkWrap: true);
   }
 }

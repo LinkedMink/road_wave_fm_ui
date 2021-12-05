@@ -34,6 +34,7 @@ class StationListModel extends ChangeNotifier {
 
       _selected?.isSelected = false;
       _selected = model;
+      notifyListeners();
     });
   }
 }

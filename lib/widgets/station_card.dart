@@ -1,39 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:road_wave_fm_ui/constants/theme.dart';
+import 'package:provider/provider.dart';
 import 'package:road_wave_fm_ui/models/station_model.dart';
 
 class StationCard extends StatelessWidget {
-  final StationModel station;
-
-  const StationCard({Key? key, required this.station}) : super(key: key);
+  const StationCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(width: 1.0, color: appTheme.dividerColor),
-          left: BorderSide(width: 1.0, color: appTheme.dividerColor),
-          right: BorderSide(width: 1.0, color: appTheme.dividerColor),
-          bottom: BorderSide(width: 1.0, color: appTheme.dividerColor),
+    final station = context.watch<StationModel>();
+
+    return Card(
+      child: ListTile(
+        leading: _signalIconFromStrength(station.signalStrength),
+        title: Text(
+            '${station.callSign}: ${station.frequency} ${station.protocol}'),
+        subtitle: Column(
+          children: [
+            Text('Format: ${station.format}'),
+            Text('Distance: ${station.distance}')
+          ],
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(children: [
-            _signalIconFromStrength(station.signalStrength),
-            Column(
-              children: [
-                Text(
-                    '${station.callSign}: ${station.frequency} ${station.protocol}'),
-                Text('Format: ${station.format}'),
-                Text('Distance: ${station.distance}'),
-              ],
-            ),
-          ]),
-          const Icon(Icons.map)
-        ],
+        trailing: IconButton(icon: const Icon(Icons.map), onPressed: () {}),
       ),
     );
   }

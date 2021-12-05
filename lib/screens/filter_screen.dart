@@ -8,10 +8,7 @@ class FilterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, title: 'Filter By'),
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: const <Widget>[Text('Formats'), FormatGridView()]),
-    );
+        appBar: buildAppBar(context, title: 'Filter'),
+        body: const FormatGridView());
   }
 }

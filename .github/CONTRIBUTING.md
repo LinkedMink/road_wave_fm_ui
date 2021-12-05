@@ -4,19 +4,19 @@
 
 ### Engage
 
-- Discuss
-- Open Issue
+- Features: Discuss
+- Bugs: Open Issue
 
-### Develop Branch
+### Branch
 
-- hotfix
-- feature
-- main
+- hotfix/*: Changes to address bugs
+- feature/*: Changes to add new or alter existing functionality
+- main: Changes that are destined for the next release
 
 ### Release
 
 - Pull Request
-- Internal Deployment
+- Private Deployment
 - Documentation
 - Public Deployment
 
