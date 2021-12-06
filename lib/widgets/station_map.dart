@@ -5,8 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 // import 'package:road_wave_fm_ui/data/coordinates.dart';
 import 'package:road_wave_fm_ui/models/geolocation_model.dart';
-// import 'package:road_wave_fm_ui/models/station_list_model.dart';
-import 'package:road_wave_fm_ui/models/station_model.dart';
+import 'package:road_wave_fm_ui/models/station_list_model.dart';
 
 class StationMap extends StatefulWidget {
   const StationMap({Key? key}) : super(key: key);
@@ -16,14 +15,13 @@ class StationMap extends StatefulWidget {
 }
 
 class StationMapState extends State<StationMap> {
-  final Completer<GoogleMapController> _controller = Completer();
-  bool isTrackingPreviousVal = false;
-  StationModel? selectedStation;
-
+  static const double _focusZoomLevel = 10.0;
   static const CameraPosition _defaultInitialPosition = CameraPosition(
     target: LatLng(37.0902, -95.7129),
     zoom: 4.0,
   );
+
+  final Completer<GoogleMapController> _controller = Completer();
 
   @override
   Widget build(BuildContext context) {
@@ -32,25 +30,26 @@ class StationMapState extends State<StationMap> {
 
     final geolocation = context.watch<GeolocationModel>();
     final currentLocation = geolocation.currentLocation;
-    if (currentLocation != null &&
-        isTrackingPreviousVal != geolocation.isTrackingLocation) {
+    if (currentLocation != null) {
       cameraPosition = CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
-        zoom: 10.0,
+        zoom: _focusZoomLevel,
       );
-      isTrackingPreviousVal = geolocation.isTrackingLocation;
     }
 
-    // final stationList = context.watch<StationListModel>();
-    // if (stationList.selected != null) {
-    //   selectedStation = stationList.selected;
-    //   _focusCoordinates(stationList.selected!.location);
-    // }
+    final stationList = context.watch<StationListModel>();
+    stationList.stationModels
+        .map((m) => Marker(
+            markerId: MarkerId(m.id),
+            position: LatLng(m.location.lat, m.location.lng),
+            infoWindow: InfoWindow(title: m.callSign, snippet: m.format)))
+        .toSet();
 
     return Stack(
       children: [
         GoogleMap(
           mapType: MapType.normal,
+          myLocationEnabled: geolocation.isTrackingLocation,
           initialCameraPosition: cameraPosition,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);

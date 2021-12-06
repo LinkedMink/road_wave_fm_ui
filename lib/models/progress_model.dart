@@ -3,63 +3,40 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 class ProgressModel extends ChangeNotifier {
-  static const _completeNotifyDelay = Duration(milliseconds: 250);
-  static const _indefiniteStep = Duration(milliseconds: 100);
-  static const _defaultEstimatedTime = Duration(seconds: 1, milliseconds: 250);
-  bool _isLoading = false;
-  bool _isIndefinite = false;
-  Timer? _indefiniteTimer;
-  double _proportionComplete = 0;
+  static const _completeNotifyDelay = Duration(milliseconds: 200);
+  final Map<Type, double?> _progressingTasks = {};
 
-  bool get isLoading => _isLoading;
+  bool get isLoading => _progressingTasks.isNotEmpty;
 
-  bool get isIndefinite => _isIndefinite;
+  // If any task is indeterminant, show as indeterminant. Otherwise, select the task
+  // with the least progress
+  double? get proportionComplete => _progressingTasks.values.fold(
+      1,
+      (previousValue, element) => previousValue == null || element == null
+          ? null
+          : element < previousValue
+              ? element
+              : previousValue);
 
-  double get proportionComplete => _proportionComplete;
-  set proportionComplete(double value) {
-    _proportionComplete = value;
-    notifyListeners();
-  }
+  void finish(Type loader) {
+    _progressingTasks.remove(loader);
 
-  void finish() {
-    _proportionComplete = 1;
-    _indefiniteTimer?.cancel();
-    notifyListeners();
+    if (isLoading) {
+      return;
+    }
 
     Timer(_completeNotifyDelay, () {
-      _isLoading = false;
       notifyListeners();
     });
   }
 
-  void start() {
-    _proportionComplete = 0;
-    _isLoading = true;
-    _isIndefinite = false;
+  void start(Type loader, {bool isIndeterminant = true}) {
+    _progressingTasks[loader] = isIndeterminant ? null : 0;
     notifyListeners();
   }
 
-  void startIndefinite({Duration estimatedTime = _defaultEstimatedTime}) {
-    _proportionComplete = 0;
-    _isLoading = true;
-    _isIndefinite = true;
-
-    // todo: should decrease rate of progress as we approach estimated time
-    final linearSteps =
-        (_defaultEstimatedTime.inMilliseconds / _indefiniteStep.inMilliseconds)
-            .floor();
-    var step = 0;
-    _indefiniteTimer = Timer.periodic(_indefiniteStep, (timer) {
-      if (step == linearSteps) {
-        proportionComplete = 0.95;
-        timer.cancel();
-        return;
-      }
-
-      proportionComplete = step / linearSteps;
-      step++;
-    });
-
+  void progress(Type loader, double proportion) {
+    _progressingTasks[loader] = proportion;
     notifyListeners();
   }
 }
