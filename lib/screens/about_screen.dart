@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:road_wave_fm_ui/models/app_package_model.dart';
 import 'package:road_wave_fm_ui/widgets/app_bar_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -9,7 +9,7 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appPackage = context.watch<AppPackageModel>();
+    final appPackage = context.watch<PackageInfo>();
 
     return Scaffold(
       appBar: buildAppBar(context, title: 'About'),

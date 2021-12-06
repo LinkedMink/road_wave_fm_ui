@@ -1,39 +1,39 @@
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:road_wave_fm_ui/models/app_package_model.dart';
 import 'package:road_wave_fm_ui/models/format_list_model.dart';
 import 'package:road_wave_fm_ui/models/geolocation_model.dart';
+import 'package:road_wave_fm_ui/models/progress_model.dart';
 import 'package:road_wave_fm_ui/models/serach_location_model.dart';
 import 'package:road_wave_fm_ui/models/station_list_model.dart';
 import 'package:road_wave_fm_ui/services/format_service.dart';
 import 'package:road_wave_fm_ui/services/station_service.dart';
 
 final appProviders = [
-  ChangeNotifierProvider<AppPackageModel>(create: (context) {
-    final appPackageModel = AppPackageModel();
-    appPackageModel.initialize();
-    return appPackageModel;
-  }),
-  Provider(create: (context) => FormatService()),
-  Provider(create: (context) => StationService()),
-  ChangeNotifierProxyProvider<FormatService, FormatListModel>(
-    create: (context) => FormatListModel(),
-    update: (context, formatService, formatListModel) {
+  FutureProvider<PackageInfo>(
+      initialData: PackageInfo(
+          appName: '', packageName: '', version: '', buildNumber: ''),
+      create: (context) => PackageInfo.fromPlatform()),
+  ChangeNotifierProvider<ProgressModel>(create: (context) => ProgressModel()),
+  ChangeNotifierProxyProvider<ProgressModel, FormatListModel>(
+    create: (context) => FormatListModel(FormatService()),
+    update: (context, progressModel, formatListModel) {
       if (formatListModel == null) {
         throw ArgumentError.notNull('formatListModel');
       }
 
-      formatListModel.formatService = formatService;
+      formatListModel.progressModel = progressModel;
+      formatListModel.fetchFormats();
       return formatListModel;
     },
   ),
-  ChangeNotifierProxyProvider<StationService, StationListModel>(
-    create: (context) => StationListModel(),
-    update: (context, stationService, stationListModel) {
+  ChangeNotifierProxyProvider<ProgressModel, StationListModel>(
+    create: (context) => StationListModel(StationService()),
+    update: (context, progressModel, stationListModel) {
       if (stationListModel == null) {
         throw ArgumentError.notNull('stationListModel');
       }
 
-      stationListModel.stationService = stationService;
+      stationListModel.progressModel = progressModel;
       return stationListModel;
     },
   ),
