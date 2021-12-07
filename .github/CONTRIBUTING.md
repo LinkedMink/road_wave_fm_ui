@@ -9,7 +9,7 @@
 
 ### Branch
 
-- hotfix/*: Changes to address bugs
+- fix/*: Changes to address bugs
 - feature/*: Changes to add new or alter existing functionality
 - main: Changes that are destined for the next release
 

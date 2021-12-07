@@ -1,11 +1,16 @@
 name: Lint and Test
+concurrency: 
+  group: lint-test-${{ github.ref }}
+  cancel-in-progress: true
 on:
   workflow_call:
   workflow_dispatch:
   push:
     branches:
+    - main
     - feature/*
     - fix/*
+    - release/*
 jobs:
   lint-test:
     runs-on: ubuntu-20.04
