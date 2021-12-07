@@ -19,3 +19,6 @@ jobs:
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/publish-android.yml@main
     with:
       environmentName: ${{ github.event.inputs.environmentName }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
