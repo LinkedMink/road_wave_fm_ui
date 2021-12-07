@@ -7,17 +7,15 @@ on:
         default: develop
         required: false
         type: string
-    # secrets:
-    #   GOOGLE_MAPS_API_KEY:
-    #     required: true
-    #   SIGNING_STORE_PASSWORD:
-    #     required: true
-    #   SIGNING_STORE_PASSWORD:
-    #     required: true
-    #   SIGNING_KEY_ALIAS:
-    #     required: true
-    #   SIGNING_STORE_DATA:
-    #     required: true
+    secrets:
+      GOOGLE_MAPS_API_KEY:
+        required: true
+      SIGNING_STORE_PASSWORD:
+        required: true
+      SIGNING_KEY_ALIAS:
+        required: true
+      SIGNING_STORE_DATA:
+        required: true
 jobs:
   build:
     runs-on: ubuntu-20.04

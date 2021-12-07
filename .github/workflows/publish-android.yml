@@ -7,6 +7,11 @@ on:
         default: develop
         required: false
         type: string
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+      SERVICE_ACCOUNT_JSON:
+        required: true
 jobs:
   publish:
     runs-on: ubuntu-20.04
