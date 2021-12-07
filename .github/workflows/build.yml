@@ -10,5 +10,4 @@ jobs:
   lint-test:
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/lint-test.yml@main
   build:
-    environment: develop
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/build-android.yml@main
