@@ -1,0 +1,64 @@
+name: Build Android
+on:
+  workflow_call:
+    inputs:
+      environmentName:
+        description: 'Environment Name'
+        default: develop
+        required: true
+    # secrets:
+    #   GOOGLE_MAPS_API_KEY:
+    #     required: true
+    #   SIGNING_STORE_PASSWORD:
+    #     required: true
+    #   SIGNING_STORE_PASSWORD:
+    #     required: true
+    #   SIGNING_KEY_ALIAS:
+    #     required: true
+    #   SIGNING_STORE_DATA:
+    #     required: true
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    environment:
+      name: ${{ inputs.environmentName }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Write build.properties
+      run: |
+        cat << EOF >> android/build.properties
+        google.mapsApiKey=${{ secrets.GOOGLE_MAPS_API_KEY }}
+        keys.storePassword=${{ secrets.SIGNING_STORE_PASSWORD }}
+        keys.storeFile=publish-keystore.p12
+        keys.keyPassword=${{ secrets.SIGNING_STORE_PASSWORD }}
+        keys.keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}
+        EOF
+    - name: Write publish-keystore.p12
+      uses: timheuer/base64-to-file@v1
+      with:
+        fileName: 'android/publish-keystore.p12'
+        encodedString: ${{ secrets.SIGNING_STORE_DATA }}
+    - name: Java Setup
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+    - name: Flutter Setup
+      uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '2.5.x'
+        channel: 'stable'
+    - name: Package Install
+      run: flutter pub get
+    - name: Build APKs
+      run: flutter build apk --no-pub --split-per-abi
+    - name: Build App Bundle
+      run: flutter build appbundle --no-pub
+    - name: Upload Packages
+      uses: actions/upload-artifact@v2
+      with:
+        name: release.packages
+        path: |
+          build/app/outputs/bundle/release/app-release.aab
+          build/app/outputs/flutter-apk/
