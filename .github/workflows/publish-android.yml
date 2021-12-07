@@ -1,0 +1,35 @@
+name: Publish Android
+on:
+  workflow_call:
+    inputs:
+      environmentName:
+        description: 'Environment Name'
+        default: develop
+        required: true
+jobs:
+  publish:
+    runs-on: ubuntu-20.04
+    environment:
+      name: ${{ inputs.environmentName }}
+    steps:
+    - name: Download APKs
+      id: downloadApks
+      uses: actions/download-artifact@v2
+      with:
+        name: release.packages
+        path: packages/
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: '${{steps.download.outputs.download-path}}/*'
+        tag: ${{ github.ref }}
+        overwrite: true
+        file_glob: true
+    - name: Publish to Play Store internal test track
+      uses: r0adkll/upload-google-play@v1
+      with:
+        serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+        packageName: net.linkedmink.road_wave_fm_ui
+        releaseFiles: app-release.aab
+        track: internal
