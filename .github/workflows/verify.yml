@@ -1,9 +1,0 @@
-name: Verify
-on:
-  push:
-    branches:
-      - feature/*
-      - hotfix/*
-jobs:
-  lint-test:
-    uses: LinkedMink/road_wave_fm_ui/.github/workflows/lint-test.yml@main

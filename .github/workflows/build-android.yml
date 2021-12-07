@@ -5,7 +5,8 @@ on:
       environmentName:
         description: 'Environment Name'
         default: develop
-        required: true
+        required: false
+        type: string
     # secrets:
     #   GOOGLE_MAPS_API_KEY:
     #     required: true

@@ -1,16 +1,16 @@
 name: Publish
+concurrency: 
+  group: publish
+  cancel-in-progress: true
 on:
   workflow_dispatch:
     inputs:
       environmentName:
         description: 'Environment Name'     
-        required: true
+        required: false
         default: develop
 jobs:
   build:
-    concurrency: 
-      group: ${{ github.event.inputs.environmentName }}-publish
-      cancel-in-progress: true
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/build-android.yml@main
     with:
       environmentName: ${{ github.event.inputs.environmentName }}
