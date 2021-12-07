@@ -55,26 +55,27 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        setProperty 'archivesBaseName', "road_wave_fm_ui-${flutterVersionName}.${flutterVersionCode}"
 
         manifestPlaceholders = [
             googleMapsApiKey: buildProperties['google.mapsApiKey']
         ]
     }
 
-   signingConfigs {
-       release {
-           storeFile buildProperties['keys.storeFile'] ? file(buildProperties['keys.storeFile']) : null
-           storePassword buildProperties['keys.storePassword']
-           keyAlias buildProperties['keys.keyAlias']
-           keyPassword buildProperties['keys.keyPassword']
-       }
-   }
+    signingConfigs {
+        release {
+            storeFile buildProperties['keys.storeFile'] ? file(buildProperties['keys.storeFile']) : null
+            storePassword buildProperties['keys.storePassword']
+            keyAlias buildProperties['keys.keyAlias']
+            keyPassword buildProperties['keys.keyPassword']
+        }
+    }
 
-   buildTypes {
-       release {
-           signingConfig signingConfigs.release
-       }
-   }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
 flutter {

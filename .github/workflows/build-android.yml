@@ -36,7 +36,7 @@ jobs:
     - name: Write publish-keystore.p12
       uses: timheuer/base64-to-file@v1
       with:
-        fileName: 'android/publish-keystore.p12'
+        fileName: 'android/app/publish-keystore.p12'
         encodedString: ${{ secrets.SIGNING_STORE_DATA }}
     - name: Java Setup
       uses: actions/setup-java@v2
