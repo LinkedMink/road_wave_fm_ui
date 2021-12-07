@@ -22,15 +22,7 @@
 
 ## Developer Setup
 
-### API Config
-
-Edit: [api.properties](/android/api.properties)
-
-```properties
-google.mapsApiKey=<value>
-```
-
-### Deploy Config
+### Build Config
 
 Generate publish keys
 
@@ -38,13 +30,14 @@ Generate publish keys
 keytool -genkey -v -keystore /Users/<username>/.keys/android-keystore.p12 -storetype pkcs12 -keyalg RSA -keysize 2048 -validity 10000 -alias dev
 ```
 
-Edit: [key.properties](/android/key.properties)
+Edit: [build.properties](/android/build.properties)
 
 ```properties
-storePassword=<password>
-keyPassword=<password>
-keyAlias=dev
-storeFile=/Users/<username>/.keys/android-keystore.p12
+google.mapsApiKey=<value>
+keys.storePassword=<password>
+keys.keyPassword=<password>
+keys.keyAlias=dev
+keys.storeFile=/Users/<username>/.keys/android-keystore.p12
 ```
 
 ### Commands

@@ -6,16 +6,10 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def apiProperties = new Properties()
-def apiPropertiesFile = rootProject.file('api.properties')
-if (apiPropertiesFile.exists()) {
-    apiProperties.load(new FileInputStream(apiPropertiesFile))
-}
-
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def buildProperties = new Properties()
+def buildPropertiesFile = rootProject.file('build.properties')
+if (buildPropertiesFile.exists()) {
+    buildProperties.load(new FileInputStream(buildPropertiesFile))
 }
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
@@ -63,16 +57,16 @@ android {
         versionName flutterVersionName
 
         manifestPlaceholders = [
-            googleMapsApiKey: apiProperties['google.mapsApiKey']
+            googleMapsApiKey: buildProperties['google.mapsApiKey']
         ]
     }
 
    signingConfigs {
        release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-           storePassword keystoreProperties['storePassword']
+           storeFile buildProperties['keys.storeFile'] ? file(buildProperties['keys.storeFile']) : null
+           storePassword buildProperties['keys.storePassword']
+           keyAlias buildProperties['keys.keyAlias']
+           keyPassword buildProperties['keys.keyPassword']
        }
    }
 
