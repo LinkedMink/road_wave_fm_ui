@@ -13,9 +13,9 @@ jobs:
       cancel-in-progress: true
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/build-android.yml@main
     with:
-      environment: ${{ github.event.inputs.environmentName }}
+      environmentName: ${{ github.event.inputs.environmentName }}
   publish:
     needs: [build]
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/publish-android.yml@main
     with:
-      environment: ${{ github.event.inputs.environmentName }}
+      environmentName: ${{ github.event.inputs.environmentName }}
