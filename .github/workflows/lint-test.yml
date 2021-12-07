@@ -1,6 +1,11 @@
 name: Lint and Test
 on:
   workflow_call:
+  workflow_dispatch:
+  push:
+    branches:
+    - feature/*
+    - fix/*
 jobs:
   lint-test:
     runs-on: ubuntu-20.04
