@@ -1,12 +1,13 @@
-name: Verify
+name: Lint and Test
 on:
+  workflow_call:
+  workflow_dispatch:
   push:
     branches:
-      - main
-      - feature/*
-      - hotfix/*
+    - feature/*
+    - fix/*
 jobs:
-  verify:
+  lint-test:
     runs-on: ubuntu-20.04
     steps:
     - name: Checkout

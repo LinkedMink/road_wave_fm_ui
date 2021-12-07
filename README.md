@@ -1,4 +1,6 @@
-# road_wave_fm_ui
+![Build Workflow](https://github.com/LinkedMink/road_wave_fm_ui/actions/workflows/build.yml/badge.svg)
+
+# Road Wave FM UI
 
 Front-end interfaces for Android and iOS to the NodeJS road-wave-fm-api
 

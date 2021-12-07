@@ -1,78 +1,21 @@
 name: Publish
+concurrency: 
+  group: publish
+  cancel-in-progress: true
 on:
-  push:
-    tags:
-      - '*'
+  workflow_dispatch:
+    inputs:
+      environmentName:
+        description: 'Environment Name'     
+        required: false
+        default: develop
 jobs:
   build:
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Write build.properties
-      run: |
-        cat << EOF >> android/build.properties
-        google.mapsApiKey=${{ secrets.GOOGLE_MAPS_API_KEY }}
-        keys.storePassword=${{ secrets.SIGNING_STORE_PASSWORD }}
-        keys.storeFile=publish-keystore.p12
-        keys.keyPassword=${{ secrets.SIGNING_STORE_PASSWORD }}
-        keys.keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}
-        EOF
-    - name: Write publish-keystore.p12
-      uses: timheuer/base64-to-file@v1
-      with:
-        fileName: 'android/publish-keystore.p12'
-        encodedString: ${{ secrets.SIGNING_STORE_DATA }}
-    - name: Java Setup
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'zulu'
-        java-version: '11'
-    - name: Flutter Setup
-      uses: subosito/flutter-action@v1
-      with:
-        flutter-version: '2.5.x'
-        channel: 'stable'
-    - name: Package Install
-      run: flutter pub get
-    - name: Build APKs
-      run: flutter build apk --no-pub --split-per-abi
-    - name: Upload APKs
-      uses: actions/upload-artifact@v2
-      with:
-        name: release.apks
-        path: build/app/outputs/flutter-apk/
-    - name: Build App Bundle
-      run: flutter build appbundle --no-pub
-    - name: Upload App Bundle
-      uses: actions/upload-artifact@v2
-      with:
-        name: release.aab
-        path: build/app/outputs/bundle/release/app-release.aab
+    uses: LinkedMink/road_wave_fm_ui/.github/workflows/build-android.yml@main
+    with:
+      environmentName: ${{ github.event.inputs.environmentName }}
   publish:
     needs: [build]
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Download APKs
-      uses: actions/download-artifact@v2
-      with:
-        name: release.apks
-    - name: Download App Bundle
-      uses: actions/download-artifact@v2
-      with:
-        name: release.aab
-    - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: *
-        tag: ${{ github.ref }}
-        overwrite: true
-        file_glob: true
-    - name: Publish to Play Store internal test track
-      uses: r0adkll/upload-google-play@v1
-      with:
-        serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-        packageName: net.linkedmink.road_wave_fm_ui
-        releaseFiles: app-release.aab
-        track: internal
+    uses: LinkedMink/road_wave_fm_ui/.github/workflows/publish-android.yml@main
+    with:
+      environmentName: ${{ github.event.inputs.environmentName }}
