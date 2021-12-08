@@ -73,22 +73,7 @@ android {
 
     buildTypes {
         release {
-
             signingConfig signingConfigs.release
-
-            // applicationVariants.all { variant ->
-            //     variant.outputs.all {
-            //         def appName = "your_app_name_"
-            //         def buildType = variant.variantData.variantConfiguration.buildType.name
-            //         def newName
-            //         if (buildType == 'debug'){
-            //             newName = "app-${variant.getFlavorName()}-debug.apk"
-            //         } else {
-            //             newName = "${appName}${defaultConfig.versionName}_${variant.getFlavorName()}.apk"
-            //         }
-            //         outputFileName = newName
-            //     }
-            // }
         }
     }
 }
@@ -101,3 +86,27 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.android.material:material:1.4.0'
 }
+
+afterEvaluate {
+    def assembleRelease = tasks.getByPath(':app:assembleRelease')
+    def copyAndroidApksPostBuild = tasks.register('copyAndroidApksPostBuild', Copy) {
+        dependsOn assembleRelease
+        from "${buildDir}/outputs/flutter-apk"
+        include '**/*'
+        into "${buildDir}/deployed"
+        rename 'app(-?)(.*)-release', "road_wave_fm_ui-${android.defaultConfig.versionName}-${android.defaultConfig.versionCode}\$1\$2"
+    }
+
+    assembleRelease.finalizedBy(copyAndroidApksPostBuild)
+
+    def bundleRelease = tasks.getByPath(':app:bundleRelease')
+    def copyAndroidBundlePostBuild = tasks.register('copyAndroidBundlePostBuild', Copy) {
+        dependsOn bundleRelease
+        from "${buildDir}/outputs/bundle/release"
+        include '**/*'
+        into "${buildDir}/deployed"
+        rename 'app(-?)(.*)-release', "road_wave_fm_ui-${android.defaultConfig.versionName}-${android.defaultConfig.versionCode}\$1\$2"
+    }
+    bundleRelease.finalizedBy(copyAndroidBundlePostBuild)
+}
+
