@@ -24,21 +24,21 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Write publish-keystore.p12
+      id: write_keystore
+      uses: timheuer/base64-to-file@v1
+      with:
+        fileName: 'publish-keystore.p12'
+        encodedString: ${{ secrets.SIGNING_STORE_DATA }}
     - name: Write build.properties
       run: |
         cat << EOF >> android/build.properties
         google.mapsApiKey=${{ secrets.GOOGLE_MAPS_API_KEY }}
         keys.storePassword=${{ secrets.SIGNING_STORE_PASSWORD }}
-        keys.storeFile=publish-keystore.p12
+        keys.storeFile=${{ steps.write_keystore.outputs.filePath }}
         keys.keyPassword=${{ secrets.SIGNING_STORE_PASSWORD }}
         keys.keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}
         EOF
-    - name: Write publish-keystore.p12
-      uses: timheuer/base64-to-file@v1
-      with:
-        fileDir: 'android/app'
-        fileName: 'publish-keystore.p12'
-        encodedString: ${{ secrets.SIGNING_STORE_DATA }}
     - name: Java Setup
       uses: actions/setup-java@v2
       with:
