@@ -55,7 +55,7 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        setProperty 'archivesBaseName', "road_wave_fm_ui-${flutterVersionName}.${flutterVersionCode}"
+        // setProperty 'archivesBaseName', "road_wave_fm_ui-${flutterVersionName}.${flutterVersionCode}"
 
         manifestPlaceholders = [
             googleMapsApiKey: buildProperties['google.mapsApiKey']
@@ -73,7 +73,22 @@ android {
 
     buildTypes {
         release {
+
             signingConfig signingConfigs.release
+
+            // applicationVariants.all { variant ->
+            //     variant.outputs.all {
+            //         def appName = "your_app_name_"
+            //         def buildType = variant.variantData.variantConfiguration.buildType.name
+            //         def newName
+            //         if (buildType == 'debug'){
+            //             newName = "app-${variant.getFlavorName()}-debug.apk"
+            //         } else {
+            //             newName = "${appName}${defaultConfig.versionName}_${variant.getFlavorName()}.apk"
+            //         }
+            //         outputFileName = newName
+            //     }
+            // }
         }
     }
 }
