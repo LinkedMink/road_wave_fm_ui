@@ -51,19 +51,14 @@ jobs:
         channel: 'stable'
     - name: Package Install
       run: flutter pub get
-    - name: Build APKs
-      run: flutter build apk --no-pub --split-per-abi
+    - name: Build APK by ABI
+      run: flutter build apk --no-pub --split-per-abi -v
+    - name: Build Fat APK
+      run: flutter build apk --no-pub -v
     - name: Build App Bundle
-      run: flutter build appbundle --no-pub
-    - name: Rename and Move Packages
-      run: |
-        mkdir build/release-packages
-        for file in build/app/outputs/bundle/release/*; \
-          do mv -- "$file" "build/release-packages/$(basename $file)" done
-        for file in build/app/outputs/flutter-apk/*; \
-          do mv -- "$file" "build/release-packages/$(basename $file)" done
+      run: flutter build appbundle --no-pub -v
     - name: Upload Packages
       uses: actions/upload-artifact@v2
       with:
         name: release-packages
-        path: build/release-packages/
+        path: build/app/deployed/
