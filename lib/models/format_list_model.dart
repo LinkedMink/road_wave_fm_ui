@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '/constants/preferences.dart';
+import '/data/format.dart';
 import '/models/format_model.dart';
 import '/models/loading_model.dart';
 import '/services/format_service.dart';
-import '/data/format.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FormatListModel extends ChangeNotifier with LoadingModel {
   final FormatService _formatService;
@@ -21,14 +22,13 @@ class FormatListModel extends ChangeNotifier with LoadingModel {
   Future<void> fetchFormats() async {
     isLoading = true;
     final preferences = await SharedPreferences.getInstance();
-    final formats =
-        preferences.get(describeEnum(Preference.formats)) as List<Format>?;
+    final formats = preferences.get(Preference.formats.name) as List<Format>?;
 
     if (formats != null) {
       _formats = formats;
 
       final selectedFormatIds =
-          preferences.getStringList(describeEnum(Preference.selectedFormatIds));
+          preferences.getStringList(Preference.selectedFormatIds.name);
       if (selectedFormatIds != null) {
         _selectedFormatIds.addAll(selectedFormatIds);
       }

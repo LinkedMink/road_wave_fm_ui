@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '/constants/preferences.dart';
 
 enum GeolocationPrompt { none, enableLocationServices, allowAppPermission }
 
@@ -50,6 +53,9 @@ class GeolocationModel extends ChangeNotifier {
         distanceFilter: _updateThresholdMeters);
     _locationSubscription = stream.listen(_updateLocation);
 
+    final preferences = await SharedPreferences.getInstance();
+    preferences.setBool(Preference.isLocationEnabled.name, true);
+
     return GeolocationPrompt.none;
   }
 
@@ -57,6 +63,18 @@ class GeolocationModel extends ChangeNotifier {
     await _locationSubscription?.cancel();
     _locationSubscription = null;
     notifyListeners();
+
+    final preferences = await SharedPreferences.getInstance();
+    preferences.setBool(Preference.isLocationEnabled.name, false);
+  }
+
+  Future<void> initialize() async {
+    final preferences = await SharedPreferences.getInstance();
+    final isLocationEnabled =
+        preferences.getBool(Preference.isLocationEnabled.name);
+    if (isLocationEnabled != null && isLocationEnabled) {
+      enableTracking();
+    }
   }
 
   _updateLocation(Position location) {

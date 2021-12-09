@@ -1,5 +1,4 @@
 enum Environment { local, dev, prod }
 
-enum EnvVar { environmentId }
-
-const envVarNames = {EnvVar.environmentId: 'ENVIRONMENT_ID'};
+// ignore: constant_identifier_names
+enum EnvVar { ENVIRONMENT_ID }
