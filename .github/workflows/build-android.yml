@@ -51,8 +51,8 @@ jobs:
     - name: Flutter Setup
       uses: subosito/flutter-action@v1
       with:
-        flutter-version: '2.5.x'
-        channel: 'stable'
+        flutter-version: '2.8.x'
+        channel: 'beta'
     - name: Package Install
       run: flutter pub get
     - name: Build APK by ABI
