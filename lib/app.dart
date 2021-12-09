@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:road_wave_fm_ui/constants/providers.dart';
-import 'package:road_wave_fm_ui/constants/screens.dart';
-import 'package:road_wave_fm_ui/constants/theme.dart';
+import '/constants/providers.dart';
+import '/constants/screens.dart';
+import '/constants/theme.dart';
 
 class RoadWaveFmApp extends StatelessWidget {
   const RoadWaveFmApp({Key? key}) : super(key: key);

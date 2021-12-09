@@ -7,13 +7,18 @@ on:
     inputs:
       environmentName:
         description: 'Environment Name'     
-        required: false
+        required: true
         default: develop
+      uploadToTag:
+        description: 'Upload built packages to Github tag'
+        default: ''
+        required: false
 jobs:
   build:
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/build-android.yml@main
     with:
       environmentName: ${{ github.event.inputs.environmentName }}
+      outputBundles: true
     secrets:
       GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
       SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}

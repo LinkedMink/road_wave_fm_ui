@@ -7,6 +7,10 @@ on:
         default: develop
         required: false
         type: string
+      outputBundles:
+        description: 'Build app bundle and fat APK for store distribution'
+        default: false
+        type: boolean
     secrets:
       GOOGLE_MAPS_API_KEY:
         required: true
@@ -54,11 +58,13 @@ jobs:
     - name: Build APK by ABI
       run: flutter build apk --no-pub --split-per-abi -v
     - name: Build Fat APK
+      if: ${{ inputs.outputBundles }}
       run: flutter build apk --no-pub -v
     - name: Build App Bundle
+      if: ${{ inputs.outputBundles }}
       run: flutter build appbundle --no-pub -v
     - name: Upload Packages
       uses: actions/upload-artifact@v2
       with:
-        name: release-packages
+        name: app-packages
         path: build/app/deployed/

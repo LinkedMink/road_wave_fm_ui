@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:road_wave_fm_ui/constants/screens.dart';
-import 'package:road_wave_fm_ui/constants/theme.dart';
+import '/constants/screens.dart';
+import '/constants/theme.dart';
 
 class NavigationBar extends StatelessWidget {
   final Screen selectedScreen;

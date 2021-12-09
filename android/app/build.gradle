@@ -93,6 +93,8 @@ afterEvaluate {
         dependsOn assembleRelease
         from "${buildDir}/outputs/flutter-apk"
         include '**/*'
+        exclude "**/app.apk*"
+        exclude "**/*debug.apk"
         into "${buildDir}/deployed"
         rename 'app(-?)(.*)-release', "road_wave_fm_ui-${android.defaultConfig.versionName}-${android.defaultConfig.versionCode}\$1\$2"
     }
@@ -104,6 +106,8 @@ afterEvaluate {
         dependsOn bundleRelease
         from "${buildDir}/outputs/bundle/release"
         include '**/*'
+        exclude "**/app.apk*"
+        exclude "**/*debug.apk"
         into "${buildDir}/deployed"
         rename 'app(-?)(.*)-release', "road_wave_fm_ui-${android.defaultConfig.versionName}-${android.defaultConfig.versionCode}\$1\$2"
     }

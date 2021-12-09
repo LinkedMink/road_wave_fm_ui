@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:road_wave_fm_ui/constants/screens.dart';
-import 'package:road_wave_fm_ui/screens/action_screen.dart';
+import '/constants/screens.dart';
+import '/screens/action_screen.dart';
 
 AppBar buildAppBar(BuildContext context, {String title = 'Road Wave FM'}) {
   final actions = <Widget>[];

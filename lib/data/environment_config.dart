@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:road_wave_fm_ui/constants/environments.dart';
+import '/constants/environments.dart';
 
 @immutable
 class EnvironmentConfig {

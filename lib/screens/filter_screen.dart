@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:road_wave_fm_ui/widgets/app_bar_builder.dart';
-import 'package:road_wave_fm_ui/widgets/format_grid_view.dart';
+import '/widgets/app_bar_builder.dart';
+import '/widgets/format_grid_view.dart';
 
 class FilterScreen extends StatelessWidget {
   const FilterScreen({Key? key}) : super(key: key);

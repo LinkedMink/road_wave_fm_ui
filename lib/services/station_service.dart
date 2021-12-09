@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:road_wave_fm_ui/constants/http.dart';
-import 'package:road_wave_fm_ui/data/environment_config.dart';
-import 'package:road_wave_fm_ui/data/station.dart';
+import '/constants/http.dart';
+import '/data/environment_config.dart';
+import '/data/station.dart';
 
 class StationService {
   static const String _formatPath = 'formats';

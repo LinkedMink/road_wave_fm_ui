@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:road_wave_fm_ui/data/coordinates.dart';
-import 'package:road_wave_fm_ui/data/document.dart';
+import '/data/coordinates.dart';
+import '/data/document.dart';
 
 @immutable
 class Station extends Document {
