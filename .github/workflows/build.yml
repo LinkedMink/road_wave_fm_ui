@@ -18,7 +18,7 @@ jobs:
   build:
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/build-android.yml@main
     with:
-      environmentName: ${{ github.event.inputs.environment }}
+      environmentName: ${{ github.event_name != 'workflow_dispatch' && 'develop' || github.event.inputs.environment }}
     secrets:
       GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
       SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}

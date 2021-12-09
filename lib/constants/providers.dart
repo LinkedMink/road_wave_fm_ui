@@ -1,5 +1,6 @@
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+
 import '/models/format_list_model.dart';
 import '/models/geolocation_model.dart';
 import '/models/progress_model.dart';
@@ -33,8 +34,11 @@ final appProviders = [
       return progress;
     },
   ),
-  ChangeNotifierProvider<GeolocationModel>(
-      create: (context) => GeolocationModel()),
+  ChangeNotifierProvider<GeolocationModel>(create: (context) {
+    final model = GeolocationModel();
+    model.initialize();
+    return model;
+  }),
   ChangeNotifierProxyProvider3<FormatListModel, StationListModel,
       GeolocationModel, SearchLocationModel>(
     create: (context) => SearchLocationModel(),
