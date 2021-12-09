@@ -1,9 +1,9 @@
-import 'package:road_wave_fm_ui/data/screen_route.dart';
-import 'package:road_wave_fm_ui/screens/about_screen.dart';
-import 'package:road_wave_fm_ui/screens/filter_screen.dart';
-import 'package:road_wave_fm_ui/screens/list_screen.dart';
-import 'package:road_wave_fm_ui/screens/search_screen.dart';
-import 'package:road_wave_fm_ui/screens/station_detail_screen.dart';
+import '/data/screen_route.dart';
+import '/screens/about_screen.dart';
+import '/screens/filter_screen.dart';
+import '/screens/list_screen.dart';
+import '/screens/search_screen.dart';
+import '/screens/station_detail_screen.dart';
 
 enum Screen { search, list, filter, details, about }
 

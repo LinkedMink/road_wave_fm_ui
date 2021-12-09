@@ -1,14 +1,16 @@
 import 'package:flutter/foundation.dart';
-import 'package:road_wave_fm_ui/data/search_query.dart';
-import 'package:road_wave_fm_ui/models/format_list_model.dart';
-import 'package:road_wave_fm_ui/models/geolocation_model.dart';
-import 'package:road_wave_fm_ui/models/station_list_model.dart';
+import '/data/search_query.dart';
+import '/models/format_list_model.dart';
+import '/models/geolocation_model.dart';
+import '/models/station_list_model.dart';
 
 class SearchLocationModel extends ChangeNotifier {
   SearchQuery? _currentQuery;
 
   late FormatListModel formatListModel;
   late StationListModel stationListModel;
+
+  SearchQuery? get currentQuery => _currentQuery;
 
   listenGeolocationUpdate(GeolocationModel model) {
     model.addListener(() {
@@ -29,5 +31,6 @@ class SearchLocationModel extends ChangeNotifier {
   Future<void> search(SearchQuery query) async {
     await stationListModel.fetchStations(query.lat, query.lng, query.formatIds);
     _currentQuery = query;
+    notifyListeners();
   }
 }

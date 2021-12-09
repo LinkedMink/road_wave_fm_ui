@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:road_wave_fm_ui/constants/screens.dart';
-import 'package:road_wave_fm_ui/models/geolocation_model.dart';
-import 'package:road_wave_fm_ui/models/progress_model.dart';
-import 'package:road_wave_fm_ui/screens/action_screen.dart';
-import 'package:road_wave_fm_ui/widgets/app_bar_builder.dart';
-import 'package:road_wave_fm_ui/widgets/station_list_view.dart';
-import 'package:road_wave_fm_ui/widgets/station_map.dart';
+import '/constants/screens.dart';
+import '/models/geolocation_model.dart';
+import '/models/progress_model.dart';
+import '/screens/action_screen.dart';
+import '/widgets/app_bar_builder.dart';
+import '/widgets/search_autocomplete.dart';
+import '/widgets/station_list_view.dart';
+import '/widgets/station_map.dart';
 
 class SearchScreen extends StatelessWidget implements ActionScreen {
   const SearchScreen({Key? key}) : super(key: key);
@@ -16,7 +17,12 @@ class SearchScreen extends StatelessWidget implements ActionScreen {
     return Scaffold(
         appBar: buildAppBar(context),
         body: Stack(
-          children: [_buildProgressBar(), const StationMap()],
+          children: [
+            _buildProgressBar(),
+            const StationMap(),
+            const Positioned(
+                top: 24.0, left: 16.0, right: 16.0, child: SearchAutocomplete())
+          ],
         ),
         bottomSheet: const StationListView());
   }

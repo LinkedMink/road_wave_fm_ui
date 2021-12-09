@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-// import 'package:road_wave_fm_ui/data/coordinates.dart';
-import 'package:road_wave_fm_ui/models/geolocation_model.dart';
-import 'package:road_wave_fm_ui/models/station_list_model.dart';
+// import '/data/coordinates.dart';
+import '/models/geolocation_model.dart';
+import '/models/station_list_model.dart';
+import '/models/station_model.dart';
 
 class StationMap extends StatefulWidget {
   const StationMap({Key? key}) : super(key: key);
@@ -18,14 +19,13 @@ class StationMapState extends State<StationMap> {
   static const double _focusZoomLevel = 10.0;
   static const CameraPosition _defaultInitialPosition = CameraPosition(
     target: LatLng(37.0902, -95.7129),
-    zoom: 4.0,
+    zoom: 3.0,
   );
 
   final Completer<GoogleMapController> _controller = Completer();
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     var cameraPosition = _defaultInitialPosition;
 
     final geolocation = context.watch<GeolocationModel>();
@@ -37,38 +37,23 @@ class StationMapState extends State<StationMap> {
       );
     }
 
-    final stationList = context.watch<StationListModel>();
-    stationList.stationModels
+    final stationModels = context
+        .select<StationListModel, List<StationModel>>((m) => m.stationModels);
+    final markers = stationModels
         .map((m) => Marker(
             markerId: MarkerId(m.id),
             position: LatLng(m.location.lat, m.location.lng),
             infoWindow: InfoWindow(title: m.callSign, snippet: m.format)))
         .toSet();
 
-    return Stack(
-      children: [
-        GoogleMap(
-          mapType: MapType.normal,
-          myLocationEnabled: geolocation.isTrackingLocation,
-          initialCameraPosition: cameraPosition,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        ),
-        Positioned(
-            top: 24.0,
-            left: 16.0,
-            right: 16.0,
-            child: TextFormField(
-                decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.search),
-                    border: const UnderlineInputBorder(),
-                    hintText: 'Search',
-                    filled: true,
-                    fillColor: theme.cardColor),
-                autofocus: !geolocation.isTrackingLocation,
-                readOnly: geolocation.isTrackingLocation))
-      ],
+    return GoogleMap(
+      mapType: MapType.normal,
+      myLocationEnabled: geolocation.isTrackingLocation,
+      initialCameraPosition: cameraPosition,
+      markers: markers,
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
+      },
     );
   }
 

@@ -1,40 +1,36 @@
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:road_wave_fm_ui/models/format_list_model.dart';
-import 'package:road_wave_fm_ui/models/geolocation_model.dart';
-import 'package:road_wave_fm_ui/models/progress_model.dart';
-import 'package:road_wave_fm_ui/models/serach_location_model.dart';
-import 'package:road_wave_fm_ui/models/station_list_model.dart';
-import 'package:road_wave_fm_ui/services/format_service.dart';
-import 'package:road_wave_fm_ui/services/station_service.dart';
+import '/models/format_list_model.dart';
+import '/models/geolocation_model.dart';
+import '/models/progress_model.dart';
+import '/models/serach_location_model.dart';
+import '/models/station_list_model.dart';
+import '/services/format_service.dart';
+import '/services/station_service.dart';
 
 final appProviders = [
   FutureProvider<PackageInfo>(
       initialData: PackageInfo(
           appName: '', packageName: '', version: '', buildNumber: ''),
       create: (context) => PackageInfo.fromPlatform()),
-  ChangeNotifierProvider<ProgressModel>(create: (context) => ProgressModel()),
-  ChangeNotifierProxyProvider<ProgressModel, FormatListModel>(
-    create: (context) => FormatListModel(FormatService()),
-    update: (context, progressModel, formatListModel) {
-      if (formatListModel == null) {
-        throw ArgumentError.notNull('formatListModel');
-      }
-
-      formatListModel.progressModel = progressModel;
-      formatListModel.fetchFormats();
-      return formatListModel;
+  ChangeNotifierProvider<FormatListModel>(
+    create: (context) {
+      final model = FormatListModel(FormatService());
+      model.fetchFormats();
+      return model;
     },
   ),
-  ChangeNotifierProxyProvider<ProgressModel, StationListModel>(
+  ChangeNotifierProvider<StationListModel>(
     create: (context) => StationListModel(StationService()),
-    update: (context, progressModel, stationListModel) {
-      if (stationListModel == null) {
-        throw ArgumentError.notNull('stationListModel');
+  ),
+  ChangeNotifierProxyProvider2<FormatListModel, StationListModel,
+      ProgressModel>(
+    create: (context) => ProgressModel(),
+    update: (context, formatList, stationList, progress) {
+      if (progress == null) {
+        throw ArgumentError.notNull('progress');
       }
-
-      stationListModel.progressModel = progressModel;
-      return stationListModel;
+      return progress;
     },
   ),
   ChangeNotifierProvider<GeolocationModel>(
@@ -42,18 +38,17 @@ final appProviders = [
   ChangeNotifierProxyProvider3<FormatListModel, StationListModel,
       GeolocationModel, SearchLocationModel>(
     create: (context) => SearchLocationModel(),
-    update: (context, formatListModel, stationListModel, geolocationModel,
-        searchLocationModel) {
-      if (searchLocationModel == null) {
-        throw ArgumentError.notNull('searchLocationModel');
+    update: (context, formatList, stationList, geolocation, searchLocation) {
+      if (searchLocation == null) {
+        throw ArgumentError.notNull('searchLocation');
       }
 
-      searchLocationModel.formatListModel = formatListModel;
-      searchLocationModel.stationListModel = stationListModel;
+      searchLocation.formatListModel = formatList;
+      searchLocation.stationListModel = stationList;
 
-      searchLocationModel.listenGeolocationUpdate(geolocationModel);
+      searchLocation.listenGeolocationUpdate(geolocation);
 
-      return searchLocationModel;
+      return searchLocation;
     },
   ),
 ];

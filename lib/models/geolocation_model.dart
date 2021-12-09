@@ -50,7 +50,6 @@ class GeolocationModel extends ChangeNotifier {
         distanceFilter: _updateThresholdMeters);
     _locationSubscription = stream.listen(_updateLocation);
 
-    notifyListeners();
     return GeolocationPrompt.none;
   }
 

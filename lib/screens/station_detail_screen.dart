@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:road_wave_fm_ui/models/station_model.dart';
-import 'package:road_wave_fm_ui/widgets/app_bar_builder.dart';
+import '/models/station_model.dart';
+import '/widgets/app_bar_builder.dart';
 
 class StationDetailScreen extends StatelessWidget {
   const StationDetailScreen({Key? key}) : super(key: key);

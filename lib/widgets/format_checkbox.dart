@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:road_wave_fm_ui/models/format_model.dart';
+import '/models/format_model.dart';
 
 class FormatCheckbox extends StatelessWidget {
   const FormatCheckbox({Key? key}) : super(key: key);

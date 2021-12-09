@@ -7,6 +7,11 @@ on:
         default: develop
         required: false
         type: string
+      uploadToTag:
+        description: 'Upload built packages to Github tag'
+        default: ''
+        required: false
+        type: string
     secrets:
       GITHUB_TOKEN:
         required: true
@@ -18,24 +23,24 @@ jobs:
     environment:
       name: ${{ inputs.environmentName }}
     steps:
-    - name: Download APKs
-      id: downloadApks
+    - name: Download App Packages
+      id: download
       uses: actions/download-artifact@v2
       with:
-        name: release.packages
-        path: packages/
-    - name: Upload binaries to release
+        name: app-packages
+    - name: Upload Packages to Github
+      if: ${{ inputs.uploadToTag }}
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: '${{steps.download.outputs.download-path}}/*'
-        tag: ${{ github.ref }}
+        tag: ${{ inputs.uploadToTag }}
         overwrite: true
         file_glob: true
-    - name: Publish to Play Store internal test track
+    - name: Publish to Play Store
       uses: r0adkll/upload-google-play@v1
       with:
         serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
         packageName: net.linkedmink.road_wave_fm_ui
-        releaseFiles: app-release.aab
+        releaseFiles: '${{steps.download.outputs.download-path}}/*.aab'
         track: internal
