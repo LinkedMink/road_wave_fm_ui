@@ -8,8 +8,13 @@ on:
         required: false
         type: string
       uploadToTag:
-        description: 'Upload built packages to Github tag'
+        description: 'Upload and associate packages with this Github tag. If empty, do not upload'
         default: ''
+        required: false
+        type: string
+      stagedTrack:
+        description: 'The staged release track in the play store to deploy to'
+        default: internal
         required: false
         type: string
     secrets:
@@ -19,17 +24,20 @@ on:
         required: true
 jobs:
   publish:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.environmentName }}
     steps:
+    - name: Validate Staging Track
+      if: ${{ inputs.stagedTrack != 'internal' && inputs.stagedTrack != 'alpha' && inputs.stagedTrack != 'open' }}
+      run: exit 1
     - name: Download App Packages
       id: download
       uses: actions/download-artifact@v2
       with:
         name: app-packages
     - name: Upload Packages to Github
-      if: ${{ inputs.uploadToTag }}
+      if: ${{ inputs.uploadToTag != '' }}
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -37,10 +45,11 @@ jobs:
         tag: ${{ inputs.uploadToTag }}
         overwrite: true
         file_glob: true
+        prerelease: true
     - name: Publish to Play Store
       uses: r0adkll/upload-google-play@v1
       with:
         serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
         packageName: net.linkedmink.road_wave_fm_ui
         releaseFiles: '${{steps.download.outputs.download-path}}/*.aab'
-        track: internal
+        track: ${{ inputs.stagedTrack }}

@@ -5,19 +5,30 @@ concurrency:
 on:
   workflow_dispatch:
     inputs:
-      environmentName:
-        description: 'Environment Name'     
+      environment:
+        description: 'Environment Name'
+        type: environment
         required: true
         default: develop
       uploadToTag:
         description: 'Upload built packages to Github tag'
         default: ''
         required: false
+      stagedTrack:
+        description: 'The staged release track in the play store to deploy to'
+        default: internal
+        required: true
+        type: choice
+        options:
+        - internal
+        - alpha
+        - open
+        # - production
 jobs:
   build:
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/build-android.yml@main
     with:
-      environmentName: ${{ github.event.inputs.environmentName }}
+      environmentName: ${{ github.event.inputs.environment }}
       outputBundles: true
     secrets:
       GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
@@ -28,7 +39,7 @@ jobs:
     needs: [build]
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/publish-android.yml@main
     with:
-      environmentName: ${{ github.event.inputs.environmentName }}
+      environmentName: ${{ github.event.inputs.environment }}
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
