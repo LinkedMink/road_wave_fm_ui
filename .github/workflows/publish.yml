@@ -24,6 +24,12 @@ on:
         - alpha
         - open
         # - production
+      isStageRolledOut:
+        description: 'Should the staged bundles be rolled out to users'
+        default: false
+        required: true
+        type: boolean
+
 jobs:
   build:
     uses: LinkedMink/road_wave_fm_ui/.github/workflows/build-android.yml@main
@@ -42,6 +48,7 @@ jobs:
       environmentName: ${{ github.event.inputs.environment }}
       uploadToTag: ${{ github.event.inputs.uploadToTag }}
       stagedTrack: ${{ github.event.inputs.stagedTrack }}
+      stagedStatus: ${{ github.event.inputs.isStageRolledOut && 'completed' || 'draft' }}
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}

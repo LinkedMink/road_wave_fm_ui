@@ -1,16 +1,13 @@
-name: Lint and Test
+name: Lint and Test Dev
 concurrency: 
   group: lint-test-${{ github.ref }}
   cancel-in-progress: true
 on:
-  workflow_call:
-  workflow_dispatch:
   push:
     branches:
-    - main
     - feature/*
     - fix/*
-    - release/*
+
 jobs:
   lint-test:
     runs-on: ubuntu-latest
@@ -22,6 +19,7 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: '11'
+        cache: 'gradle'
     - name: Flutter Setup
       uses: subosito/flutter-action@v1
       with:

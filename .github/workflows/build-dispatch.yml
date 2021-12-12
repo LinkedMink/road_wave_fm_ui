@@ -1,0 +1,23 @@
+name: Build Dispatch
+concurrency: 
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment Name'
+        type: environment
+        required: true
+        default: develop
+
+jobs:
+  build:
+    uses: LinkedMink/road_wave_fm_ui/.github/workflows/build-android.yml@main
+    with:
+      environmentName: ${{ github.event.inputs.environment  }}
+    secrets:
+      GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+      SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+      SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+      SIGNING_STORE_DATA: ${{ secrets.SIGNING_STORE_DATA }}

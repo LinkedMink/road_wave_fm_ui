@@ -20,6 +20,7 @@ on:
         required: true
       SIGNING_STORE_DATA:
         required: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -48,6 +49,7 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: '11'
+        cache: 'gradle'
     - name: Flutter Setup
       uses: subosito/flutter-action@v1
       with:
@@ -55,13 +57,18 @@ jobs:
         channel: 'beta'
     - name: Package Install
       run: flutter pub get
+    - name: Lint App
+      run: flutter analyze --no-pub 
+    - name: Test App
+      run: flutter test --no-pub --reporter expanded --coverage
     - name: Build APK by ABI
+      if: !inputs.outputBundles
       run: flutter build apk --no-pub --split-per-abi -v
     # - name: Build Fat APK
-    #   if: ${{ inputs.outputBundles }}
+    #   if: inputs.outputBundles
     #   run: flutter build apk --no-pub -v
     - name: Build App Bundle
-      if: ${{ inputs.outputBundles }}
+      if: inputs.outputBundles
       run: flutter build appbundle --no-pub -v
     - name: Upload Packages
       uses: actions/upload-artifact@v2
