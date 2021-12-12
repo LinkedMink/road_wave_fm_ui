@@ -62,7 +62,7 @@ jobs:
     - name: Test App
       run: flutter test --no-pub --reporter expanded --coverage
     - name: Build APK by ABI
-      if: !inputs.outputBundles
+      if: inputs.outputBundles != true
       run: flutter build apk --no-pub --split-per-abi -v
     # - name: Build Fat APK
     #   if: inputs.outputBundles
