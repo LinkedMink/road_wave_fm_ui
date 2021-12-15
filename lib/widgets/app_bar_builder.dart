@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '/constants/screens.dart';
 import '/screens/action_screen.dart';
 
@@ -22,6 +23,13 @@ AppBar buildAppBar(BuildContext context, {String title = 'Road Wave FM'}) {
     popupItems.add(const PopupMenuItem<AppBarMenuOption>(
       value: AppBarMenuOption.about,
       child: Text('About'),
+    ));
+  }
+
+  if (currentRoute != appBarMenuOptionScreen[AppBarMenuOption.license]) {
+    popupItems.add(const PopupMenuItem<AppBarMenuOption>(
+      value: AppBarMenuOption.license,
+      child: Text('License'),
     ));
   }
 

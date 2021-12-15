@@ -1,6 +1,7 @@
 # Road Wave FM UI
 
 ![Build State](https://github.com/LinkedMink/road_wave_fm_ui/actions/workflows/build-main.yml/badge.svg)
+![Dev State](https://github.com/LinkedMink/road_wave_fm_ui/actions/workflows/lint-test-dev.yml/badge.svg)
 
 ## Overview
 

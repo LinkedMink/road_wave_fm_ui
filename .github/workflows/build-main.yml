@@ -1,6 +1,6 @@
 name: Build main
 concurrency: 
-  group: build-main
+  group: "build-refs/heads/main"
   cancel-in-progress: true
 on:
   push:
