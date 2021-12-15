@@ -6,7 +6,7 @@ import '/data/document.dart';
 class Station extends Document {
   final String callSign;
   final String protocol;
-  final String frequency;
+  final num frequency;
   final String format;
   final Coordinates location;
   final double distance;

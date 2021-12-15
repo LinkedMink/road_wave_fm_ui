@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-// import '/data/coordinates.dart';
+
 import '/models/geolocation_model.dart';
 import '/models/station_list_model.dart';
 import '/models/station_model.dart';
@@ -16,7 +16,9 @@ class StationMap extends StatefulWidget {
 }
 
 class StationMapState extends State<StationMap> {
-  static const double _focusZoomLevel = 10.0;
+  // static const double _focusZoomLevel = 10.0;
+
+  // Center of US
   static const CameraPosition _defaultInitialPosition = CameraPosition(
     target: LatLng(37.0902, -95.7129),
     zoom: 3.0,
@@ -27,15 +29,6 @@ class StationMapState extends State<StationMap> {
   @override
   Widget build(BuildContext context) {
     var cameraPosition = _defaultInitialPosition;
-
-    final geolocation = context.watch<GeolocationModel>();
-    final currentLocation = geolocation.currentLocation;
-    if (currentLocation != null) {
-      cameraPosition = CameraPosition(
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
-        zoom: _focusZoomLevel,
-      );
-    }
 
     final stationModels = context
         .select<StationListModel, List<StationModel>>((m) => m.stationModels);
@@ -48,7 +41,8 @@ class StationMapState extends State<StationMap> {
 
     return GoogleMap(
       mapType: MapType.normal,
-      myLocationEnabled: geolocation.isTrackingLocation,
+      myLocationEnabled: context
+          .select<GeolocationModel, bool>((model) => model.isTrackingLocation),
       initialCameraPosition: cameraPosition,
       markers: markers,
       onMapCreated: (GoogleMapController controller) {

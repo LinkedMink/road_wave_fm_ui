@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+
+import '/data/search_query.dart';
 import '/data/station.dart';
 import '/models/station_model.dart';
 import '/services/station_service.dart';
@@ -15,9 +17,8 @@ class StationListModel extends ChangeNotifier {
 
   StationListModel(this._stationService);
 
-  Future<void> fetchStations(
-      double lat, double lng, List<String> formatIds) async {
-    _stations = await _stationService.get(lat, lng, formatIds);
+  Future<void> fetchStations(SearchQuery query) async {
+    _stations = await _stationService.get(query);
 
     _selected = null;
     _stationModels = _stations.map((s) => StationModel(s)).toList();

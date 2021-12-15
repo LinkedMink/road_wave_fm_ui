@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import '/data/search_query.dart';
 import '/models/format_list_model.dart';
 import '/models/geolocation_model.dart';
@@ -29,7 +30,7 @@ class SearchLocationModel extends ChangeNotifier {
   }
 
   Future<void> search(SearchQuery query) async {
-    await stationListModel.fetchStations(query.lat, query.lng, query.formatIds);
+    await stationListModel.fetchStations(query);
     _currentQuery = query;
     notifyListeners();
   }

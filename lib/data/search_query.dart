@@ -18,4 +18,7 @@ class SearchQuery {
       other.lng == lng &&
       other.formatIds.length == formatIds.length &&
       other.formatIds.every((id) => formatIds.contains(id));
+
+  Map<String, dynamic> toQueryParams() =>
+      {'lat': lat.toString(), 'lng': lng.toString(), 'formatIds': formatIds};
 }
