@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '/models/format_list_model.dart';
 import '/models/geolocation_model.dart';
 import '/models/progress_model.dart';
-import '/models/serach_location_model.dart';
+import '/models/search_location_model.dart';
 import '/models/station_list_model.dart';
 import '/services/format_service.dart';
 import '/services/station_service.dart';
@@ -50,6 +50,7 @@ final appProviders = [
       searchLocation.formatListModel = formatList;
       searchLocation.stationListModel = stationList;
 
+      searchLocation.listenFormatUpdate(formatList);
       searchLocation.listenGeolocationUpdate(geolocation);
 
       return searchLocation;

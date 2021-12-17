@@ -7,8 +7,8 @@ class Coordinates {
 
   const Coordinates(this.lat, this.lng);
 
-  factory Coordinates.fromJson(Map<String, double> json) =>
-      Coordinates(json['lat']!, json['lng']!);
+  factory Coordinates.fromJson(Map<String, dynamic> json) =>
+      Coordinates(json['lat'], json['lng']);
 
   @override
   int get hashCode => lat.hashCode ^ lng.hashCode;

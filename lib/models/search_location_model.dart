@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import '/data/search_query.dart';
 import '/models/format_list_model.dart';
 import '/models/geolocation_model.dart';
@@ -11,6 +12,8 @@ class SearchLocationModel extends ChangeNotifier {
   late StationListModel stationListModel;
 
   SearchQuery? get currentQuery => _currentQuery;
+
+  bool get hasSearched => _currentQuery != null;
 
   listenGeolocationUpdate(GeolocationModel model) {
     model.addListener(() {
@@ -28,8 +31,24 @@ class SearchLocationModel extends ChangeNotifier {
     });
   }
 
+  listenFormatUpdate(FormatListModel model) {
+    model.addListener(() {
+      final current = _currentQuery;
+      if (current == null) {
+        return;
+      }
+
+      final query =
+          SearchQuery.fromQuery(current, formatListModel.selectedFormatIds);
+
+      if (query != current) {
+        search(query);
+      }
+    });
+  }
+
   Future<void> search(SearchQuery query) async {
-    await stationListModel.fetchStations(query.lat, query.lng, query.formatIds);
+    await stationListModel.fetchStations(query);
     _currentQuery = query;
     notifyListeners();
   }

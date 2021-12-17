@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '/constants/screens.dart';
+import '/models/expansion_model.dart';
 import '/models/geolocation_model.dart';
 import '/models/progress_model.dart';
+import '/models/search_location_model.dart';
 import '/screens/action_screen.dart';
 import '/widgets/app_bar_builder.dart';
 import '/widgets/search_autocomplete.dart';
@@ -14,17 +17,39 @@ class SearchScreen extends StatelessWidget implements ActionScreen {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: buildAppBar(context),
-        body: Stack(
-          children: [
-            _buildProgressBar(),
-            const StationMap(),
-            const Positioned(
-                top: 24.0, left: 16.0, right: 16.0, child: SearchAutocomplete())
-          ],
-        ),
-        bottomSheet: const StationListView());
+    final theme = Theme.of(context);
+    final searchModel = context.watch<SearchLocationModel>();
+
+    return ChangeNotifierProvider.value(
+        value: ExpansionModel(),
+        child: Scaffold(
+            appBar: buildAppBar(context),
+            body: Column(children: [
+              AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  child: Flexible(
+                      child: Stack(
+                    children: [
+                      _buildProgressBar(),
+                      const StationMap(),
+                      const Positioned(
+                          top: 24.0,
+                          left: 16.0,
+                          right: 16.0,
+                          child: SearchAutocomplete())
+                    ],
+                  ))),
+              AnimatedContainer(
+                height: searchModel.hasSearched ? 96 : 40,
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  color: theme.primaryColor,
+                ),
+              ),
+            ]),
+            bottomSheet: StationListView(),
+            floatingActionButton:
+                searchModel.hasSearched ? _buildExpandButton() : null));
   }
 
   @override
@@ -49,6 +74,13 @@ class SearchScreen extends StatelessWidget implements ActionScreen {
               })),
     ];
   }
+
+  _buildExpandButton() => Consumer<ExpansionModel>(
+      builder: (context, model, child) => FloatingActionButton(
+          onPressed: () => model.toggle(),
+          backgroundColor: Colors.blueGrey,
+          child:
+              Icon(model.isExpanded ? Icons.expand_more : Icons.expand_less)));
 
   _buildProgressBar() => Consumer<ProgressModel>(
       builder: (context, progressModel, child) => progressModel.isLoading

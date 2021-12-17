@@ -1,8 +1,7 @@
-import 'package:road_wave_fm_ui/screens/license_screen.dart';
-
 import '/data/screen_route.dart';
 import '/screens/about_screen.dart';
 import '/screens/filter_screen.dart';
+import '/screens/license_screen.dart';
 import '/screens/list_screen.dart';
 import '/screens/search_screen.dart';
 import '/screens/station_detail_screen.dart';

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import '/data/format.dart';
 
 // ignore: must_be_immutable
@@ -11,6 +12,8 @@ class FormatModel extends Format with ChangeNotifier {
     _isSelected = isSelected;
     notifyListeners();
   }
+
+  bool toggle() => isSelected = !isSelected;
 
   FormatModel(Format format, this._isSelected) : super(format.id, format.name);
 }

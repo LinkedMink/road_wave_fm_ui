@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '/models/station_model.dart';
 
 class StationCard extends StatelessWidget {
@@ -9,19 +10,23 @@ class StationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final station = context.watch<StationModel>();
 
-    return Card(
-      child: ListTile(
-        leading: _signalIconFromStrength(station.signalStrength),
-        title: Text(
-            '${station.callSign}: ${station.frequency} ${station.protocol}'),
-        subtitle: Column(
-          children: [
-            Text('Format: ${station.format}'),
-            Text('Distance: ${station.distance}')
-          ],
-        ),
-        trailing: IconButton(icon: const Icon(Icons.map), onPressed: () {}),
+    return ListTile(
+      leading: _signalIconFromStrength(station.signalStrength),
+      title:
+          Text('${station.callSign}: ${station.frequency} ${station.protocol}'),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Format: ${station.format}'),
+          Text('Distance: ${_distanceFormat(station.distance)}')
+        ],
       ),
+      trailing: IconButton(
+          icon: const Icon(Icons.map),
+          onPressed: () {
+            station.toggle();
+          }),
+      selected: station.isSelected,
     );
   }
 
@@ -38,5 +43,10 @@ class StationCard extends StatelessWidget {
     else {
       return const Icon(Icons.signal_wifi_4_bar);
     }
+  }
+
+  String _distanceFormat(double distance) {
+    final km = distance / 1000;
+    return km > 1 ? '${km.toStringAsFixed(2)} km' : '${distance.truncate()} m';
   }
 }
