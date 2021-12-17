@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '/models/station_model.dart';
 
 class StationCard extends StatelessWidget {
@@ -10,14 +11,16 @@ class StationCard extends StatelessWidget {
     final station = context.watch<StationModel>();
 
     return Card(
+      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
       child: ListTile(
         leading: _signalIconFromStrength(station.signalStrength),
         title: Text(
             '${station.callSign}: ${station.frequency} ${station.protocol}'),
         subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Format: ${station.format}'),
-            Text('Distance: ${station.distance}')
+            Text('Distance: ${_distanceFormat(station.distance)}')
           ],
         ),
         trailing: IconButton(icon: const Icon(Icons.map), onPressed: () {}),
@@ -38,5 +41,10 @@ class StationCard extends StatelessWidget {
     else {
       return const Icon(Icons.signal_wifi_4_bar);
     }
+  }
+
+  String _distanceFormat(double distance) {
+    final km = distance / 1000;
+    return km > 1 ? '${km.toStringAsFixed(2)} km' : '${distance.truncate()} m';
   }
 }
