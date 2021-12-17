@@ -7,11 +7,11 @@ import '/services/station_service.dart';
 
 class StationListModel extends ChangeNotifier {
   final StationService _stationService;
+  final Set<StationModel> _stationModels = {};
   List<Station> _stations = [];
-  List<StationModel> _stationModels = [];
   StationModel? _selected;
 
-  List<StationModel> get stationModels => _stationModels;
+  Set<StationModel> get stationModels => _stationModels;
 
   StationModel? get selected => _selected;
 
@@ -21,20 +21,29 @@ class StationListModel extends ChangeNotifier {
     _stations = await _stationService.get(query);
 
     _selected = null;
-    _stationModels = _stations.map((s) => StationModel(s)).toList();
-    _stationModels.forEach(_listenStationModel);
+    _stationModels.clear();
+    _stations.asMap().forEach((index, station) {
+      final model = StationModel(index, station);
+      _stationModels.add(model);
+      _listenStationModel(model);
+    });
 
     notifyListeners();
   }
 
   _listenStationModel(StationModel model) {
     model.addListener(() {
-      if (!model.isSelected) {
-        return;
+      if (_selected == model) {
+        if (!model.isSelected) {
+          _selected = null;
+        } else {
+          return;
+        }
+      } else {
+        _selected?.isSelected = false;
+        _selected = model;
       }
 
-      _selected?.isSelected = false;
-      _selected = model;
       notifyListeners();
     });
   }

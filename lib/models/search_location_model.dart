@@ -13,6 +13,8 @@ class SearchLocationModel extends ChangeNotifier {
 
   SearchQuery? get currentQuery => _currentQuery;
 
+  bool get hasSearched => _currentQuery != null;
+
   listenGeolocationUpdate(GeolocationModel model) {
     model.addListener(() {
       final position = model.currentLocation;
@@ -24,6 +26,22 @@ class SearchLocationModel extends ChangeNotifier {
           formatListModel.selectedFormatIds);
 
       if (query != _currentQuery) {
+        search(query);
+      }
+    });
+  }
+
+  listenFormatUpdate(FormatListModel model) {
+    model.addListener(() {
+      final current = _currentQuery;
+      if (current == null) {
+        return;
+      }
+
+      final query =
+          SearchQuery.fromQuery(current, formatListModel.selectedFormatIds);
+
+      if (query != current) {
         search(query);
       }
     });

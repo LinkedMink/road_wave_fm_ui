@@ -5,6 +5,7 @@ import '/constants/screens.dart';
 import '/models/expansion_model.dart';
 import '/models/geolocation_model.dart';
 import '/models/progress_model.dart';
+import '/models/search_location_model.dart';
 import '/screens/action_screen.dart';
 import '/widgets/app_bar_builder.dart';
 import '/widgets/search_autocomplete.dart';
@@ -17,33 +18,38 @@ class SearchScreen extends StatelessWidget implements ActionScreen {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final searchModel = context.watch<SearchLocationModel>();
 
     return ChangeNotifierProvider.value(
         value: ExpansionModel(),
         child: Scaffold(
             appBar: buildAppBar(context),
             body: Column(children: [
-              Flexible(
-                  child: Stack(
-                children: [
-                  _buildProgressBar(),
-                  const StationMap(),
-                  const Positioned(
-                      top: 24.0,
-                      left: 16.0,
-                      right: 16.0,
-                      child: SearchAutocomplete())
-                ],
-              )),
-              Container(
-                height: 96,
+              AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  child: Flexible(
+                      child: Stack(
+                    children: [
+                      _buildProgressBar(),
+                      const StationMap(),
+                      const Positioned(
+                          top: 24.0,
+                          left: 16.0,
+                          right: 16.0,
+                          child: SearchAutocomplete())
+                    ],
+                  ))),
+              AnimatedContainer(
+                height: searchModel.hasSearched ? 96 : 40,
+                duration: const Duration(milliseconds: 200),
                 decoration: BoxDecoration(
-                  color: theme.bottomAppBarColor,
+                  color: theme.primaryColor,
                 ),
               ),
             ]),
-            bottomSheet: const StationListView(),
-            floatingActionButton: _buildExpandButton()));
+            bottomSheet: StationListView(),
+            floatingActionButton:
+                searchModel.hasSearched ? _buildExpandButton() : null));
   }
 
   @override

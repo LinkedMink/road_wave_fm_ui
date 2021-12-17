@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '/widgets/app_bar_builder.dart';
 import '/widgets/station_list_view.dart';
 
@@ -11,7 +12,7 @@ class ListScreen extends StatelessWidget {
       appBar: buildAppBar(context),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: const <Widget>[Text('List'), StationListView()]),
+          children: <Widget>[const Text('List'), StationListView()]),
     );
   }
 }

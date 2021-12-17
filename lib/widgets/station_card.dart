@@ -10,21 +10,23 @@ class StationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final station = context.watch<StationModel>();
 
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-      child: ListTile(
-        leading: _signalIconFromStrength(station.signalStrength),
-        title: Text(
-            '${station.callSign}: ${station.frequency} ${station.protocol}'),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Format: ${station.format}'),
-            Text('Distance: ${_distanceFormat(station.distance)}')
-          ],
-        ),
-        trailing: IconButton(icon: const Icon(Icons.map), onPressed: () {}),
+    return ListTile(
+      leading: _signalIconFromStrength(station.signalStrength),
+      title:
+          Text('${station.callSign}: ${station.frequency} ${station.protocol}'),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Format: ${station.format}'),
+          Text('Distance: ${_distanceFormat(station.distance)}')
+        ],
       ),
+      trailing: IconButton(
+          icon: const Icon(Icons.map),
+          onPressed: () {
+            station.toggle();
+          }),
+      selected: station.isSelected,
     );
   }
 

@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
+
 import '/data/station.dart';
 
 // ignore: must_be_immutable
 class StationModel extends Station with ChangeNotifier {
+  final int index;
   bool _isSelected = false;
 
   bool get isSelected => _isSelected;
@@ -12,7 +14,9 @@ class StationModel extends Station with ChangeNotifier {
     notifyListeners();
   }
 
-  StationModel(Station station)
+  bool toggle() => isSelected = !isSelected;
+
+  StationModel(this.index, station)
       : super(
             station.id,
             station.callSign,

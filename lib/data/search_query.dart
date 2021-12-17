@@ -8,6 +8,10 @@ class SearchQuery {
 
   const SearchQuery(this.lat, this.lng, this.formatIds);
 
+  SearchQuery.fromQuery(SearchQuery query, this.formatIds)
+      : lat = query.lat,
+        lng = query.lng;
+
   @override
   int get hashCode => lat.hashCode ^ lng.hashCode ^ formatIds.hashCode;
 
@@ -20,5 +24,5 @@ class SearchQuery {
       other.formatIds.every((id) => formatIds.contains(id));
 
   Map<String, dynamic> toQueryParams() =>
-      {'lat': lat.toString(), 'lng': lng.toString(), 'formatIds': formatIds};
+      {'lat': lat.toString(), 'lng': lng.toString(), 'fmt': formatIds};
 }

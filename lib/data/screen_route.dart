@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 @immutable
-class ScreenRoute<T extends Widget> {
+class ScreenRoute {
   final String name;
   final WidgetBuilder factory;
 

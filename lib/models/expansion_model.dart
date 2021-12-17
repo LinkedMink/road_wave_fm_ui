@@ -12,5 +12,5 @@ class ExpansionModel extends ChangeNotifier {
 
   ExpansionModel({isExpanded = false}) : _isExpanded = isExpanded;
 
-  toggle() => isExpanded = !isExpanded;
+  bool toggle() => isExpanded = !isExpanded;
 }

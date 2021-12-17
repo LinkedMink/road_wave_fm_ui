@@ -42,6 +42,14 @@ class FormatListModel extends ChangeNotifier with LoadingModel {
     _buildFormatModels();
   }
 
+  Future<bool> saveSelectedFormats() async {
+    final preferences = await SharedPreferences.getInstance();
+    final result = preferences.setStringList(
+        Preference.selectedFormatIds.name, selectedFormatIds);
+    notifyListeners();
+    return result;
+  }
+
   _buildFormatModels() {
     _formatModels = _formats.map((f) {
       final model = FormatModel(f, _selectedFormatIds.contains(f.id));
