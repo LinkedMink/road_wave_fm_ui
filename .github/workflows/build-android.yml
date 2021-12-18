@@ -54,7 +54,7 @@ jobs:
       uses: subosito/flutter-action@v1
       with:
         flutter-version: '2.8.x'
-        channel: 'beta'
+        channel: 'stable'
     - name: Package Install
       run: flutter pub get
     - name: Lint App

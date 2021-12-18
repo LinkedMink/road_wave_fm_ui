@@ -18,7 +18,6 @@ class SearchScreen extends StatelessWidget implements ActionScreen {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final searchModel = context.watch<SearchLocationModel>();
 
     return ChangeNotifierProvider.value(
         value: ExpansionModel(),
@@ -39,17 +38,19 @@ class SearchScreen extends StatelessWidget implements ActionScreen {
                           child: SearchAutocomplete())
                     ],
                   ))),
-              AnimatedContainer(
-                height: searchModel.hasSearched ? 96 : 40,
-                duration: const Duration(milliseconds: 200),
-                decoration: BoxDecoration(
-                  color: theme.primaryColor,
+              Selector<SearchLocationModel, bool>(
+                selector: (context, model) => model.hasSearched,
+                builder: (context, hasSearched, child) => AnimatedContainer(
+                  height: hasSearched ? 96 : 40,
+                  duration: const Duration(milliseconds: 200),
+                  decoration: BoxDecoration(
+                    color: theme.primaryColor,
+                  ),
                 ),
               ),
             ]),
             bottomSheet: StationListView(),
-            floatingActionButton:
-                searchModel.hasSearched ? _buildExpandButton() : null));
+            floatingActionButton: _buildExpandButton()));
   }
 
   @override
@@ -75,12 +76,20 @@ class SearchScreen extends StatelessWidget implements ActionScreen {
     ];
   }
 
-  _buildExpandButton() => Consumer<ExpansionModel>(
-      builder: (context, model, child) => FloatingActionButton(
-          onPressed: () => model.toggle(),
-          backgroundColor: Colors.blueGrey,
-          child:
-              Icon(model.isExpanded ? Icons.expand_more : Icons.expand_less)));
+  _buildExpandButton() => Selector<SearchLocationModel, bool>(
+      selector: (context, model) => model.hasSearched,
+      builder: (context, hasSearched, child) {
+        if (!hasSearched) {
+          return Container();
+        }
+
+        final model = context.watch<ExpansionModel>();
+        return FloatingActionButton(
+            onPressed: () => model.toggle(),
+            backgroundColor: Colors.blueGrey,
+            child:
+                Icon(model.isExpanded ? Icons.expand_more : Icons.expand_less));
+      });
 
   _buildProgressBar() => Consumer<ProgressModel>(
       builder: (context, progressModel, child) => progressModel.isLoading

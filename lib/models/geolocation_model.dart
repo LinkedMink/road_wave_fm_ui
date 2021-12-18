@@ -9,8 +9,9 @@ import '/constants/preferences.dart';
 enum GeolocationPrompt { none, enableLocationServices, allowAppPermission }
 
 class GeolocationModel extends ChangeNotifier {
-  static const int _updateThresholdMeters = 500;
-  static const LocationAccuracy _locationAccuracy = LocationAccuracy.medium;
+  // distanceFilter in meters
+  static const LocationSettings _locationSettings =
+      LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 500);
 
   StreamSubscription<Position>? _locationSubscription;
   Position? _currentLocation;
@@ -48,9 +49,8 @@ class GeolocationModel extends ChangeNotifier {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    final stream = Geolocator.getPositionStream(
-        desiredAccuracy: _locationAccuracy,
-        distanceFilter: _updateThresholdMeters);
+    final stream =
+        Geolocator.getPositionStream(locationSettings: _locationSettings);
     _locationSubscription = stream.listen(_updateLocation);
 
     final preferences = await SharedPreferences.getInstance();

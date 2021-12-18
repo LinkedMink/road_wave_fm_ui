@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/models/expansion_model.dart';
+import '/models/search_location_model.dart';
 import '/models/station_list_model.dart';
 import '/models/station_model.dart';
-import '/widgets/station_card.dart';
+import '/widgets/station_list_tile.dart';
 
 class StationListView extends StatelessWidget {
   // todo: Determine height dynamically
@@ -16,6 +17,8 @@ class StationListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final expandModel = context.watch<ExpansionModel>();
+    final hasSearched =
+        context.select<SearchLocationModel, bool>((m) => m.hasSearched);
     final selectedModel =
         context.select<StationListModel, StationModel?>((m) => m.selected);
 
@@ -26,12 +29,23 @@ class StationListView extends StatelessWidget {
           duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
     }
 
-    double height = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double height = hasSearched
+        ? expandModel.isExpanded
+            ? screenHeight - 0.30 * screenHeight
+            : 84
+        : 32;
+
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      decoration: BoxDecoration(color: theme.bottomAppBarColor),
-      height: expandModel.isExpanded ? height - 0.30 * height : 84,
+      duration: const Duration(milliseconds: 250),
+      decoration: BoxDecoration(
+          color: theme.bottomAppBarColor,
+          border: expandModel.isExpanded
+              ? Border.fromBorderSide(
+                  BorderSide(color: theme.primaryColorDark, width: 8.0))
+              : null),
+      height: height,
       //padding: EdgeInsets.symmetric(),
       //constraints: const BoxConstraints(minHeight: 120, maxHeight: 240),
       child: _buildListView(context),
@@ -45,7 +59,7 @@ class StationListView extends StatelessWidget {
               itemCount: stationModels.length,
               itemBuilder: (context, index) => ChangeNotifierProvider.value(
                   value: stationModels.elementAt(index),
-                  child: const StationCard()),
+                  child: const StationListTile()),
               shrinkWrap: true,
               controller: _controller);
         },

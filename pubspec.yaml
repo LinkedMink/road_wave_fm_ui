@@ -1,23 +1,23 @@
 name: road_wave_fm_ui
 description: Front-end interface to the NodeJS road-wave-fm-api
 publish_to: 'none'
-version: 0.9.0+2
+version: 0.9.0+3
 homepage: https://github.com/LinkedMink/road_wave_fm_ui
 repository: https://github.com/LinkedMink/road_wave_fm_ui
 issue_tracker: https://github.com/LinkedMink/road_wave_fm_ui/issues
 documentation: https://github.com/LinkedMink/road_wave_fm_ui
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=2.15.0 <3.0.0"
 dependencies:
   flutter:
     sdk: flutter
-  flutter_markdown: ^0.6.8
-  geolocator: ^7.7.1
+  flutter_markdown: ^0.6.9
+  geolocator: ^8.0.1
   google_maps_flutter: ^2.1.1
   http: ^0.13.4
   package_info_plus: ^1.3.0
   provider: ^6.0.1
-  shared_preferences: ^2.0.9
+  shared_preferences: ^2.0.11
   url_launcher: ^6.0.17
 dev_dependencies:
   flutter_test:
