@@ -6,8 +6,10 @@ class ExpansionModel extends ChangeNotifier {
   bool get isExpanded => _isExpanded;
 
   set isExpanded(bool isExpanded) {
-    _isExpanded = isExpanded;
-    notifyListeners();
+    if (_isExpanded != isExpanded) {
+      _isExpanded = isExpanded;
+      notifyListeners();
+    }
   }
 
   ExpansionModel({isExpanded = false}) : _isExpanded = isExpanded;

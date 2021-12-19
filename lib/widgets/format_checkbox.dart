@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '/models/format_model.dart';
 
 class FormatCheckbox extends StatelessWidget {
@@ -9,11 +10,9 @@ class FormatCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<FormatModel>();
 
-    return Row(children: [
-      Checkbox(
-          value: model.isSelected,
-          onChanged: (isChecked) => {model.isSelected = isChecked ?? false}),
-      Text(model.name),
-    ]);
+    return CheckboxListTile(
+        value: model.isSelected,
+        title: Text(model.name),
+        onChanged: (isChecked) => {model.isSelected = isChecked ?? false});
   }
 }

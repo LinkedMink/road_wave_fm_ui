@@ -10,8 +10,10 @@ class StationModel extends Station with ChangeNotifier {
   bool get isSelected => _isSelected;
 
   set isSelected(bool isSelected) {
-    _isSelected = isSelected;
-    notifyListeners();
+    if (_isSelected != isSelected) {
+      _isSelected = isSelected;
+      notifyListeners();
+    }
   }
 
   bool toggle() => isSelected = !isSelected;

@@ -7,7 +7,17 @@ mixin LoadingModel on ChangeNotifier {
 
   @protected
   set isLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
+    if (_isLoading != value) {
+      _isLoading = value;
+      notifyListeners();
+    }
+  }
+
+  @protected
+  Future<T> runLoadFunc<T>(Future<T> Function() loadFunc) async {
+    isLoading = true;
+    final result = await loadFunc();
+    isLoading = false;
+    return result;
   }
 }

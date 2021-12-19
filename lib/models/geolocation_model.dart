@@ -21,6 +21,10 @@ class GeolocationModel extends ChangeNotifier {
   Position? get currentLocation => _currentLocation;
 
   Future<GeolocationPrompt> enableTracking() async {
+    if (isTrackingLocation) {
+      return GeolocationPrompt.none;
+    }
+
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       // Location services are not enabled don't continue
@@ -60,6 +64,10 @@ class GeolocationModel extends ChangeNotifier {
   }
 
   Future<void> disableTracking() async {
+    if (!isTrackingLocation) {
+      return;
+    }
+
     await _locationSubscription?.cancel();
     _locationSubscription = null;
     notifyListeners();
@@ -78,7 +86,9 @@ class GeolocationModel extends ChangeNotifier {
   }
 
   _updateLocation(Position location) {
-    _currentLocation = location;
-    notifyListeners();
+    if (_currentLocation != location) {
+      _currentLocation = location;
+      notifyListeners();
+    }
   }
 }

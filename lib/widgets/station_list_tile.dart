@@ -13,9 +13,8 @@ class StationListTile extends StatelessWidget {
 
     return ListTile(
         leading: CircleAvatar(
-            backgroundColor: station.isSelected
-                ? theme.colorScheme.primaryVariant
-                : theme.backgroundColor,
+            backgroundColor:
+                station.isSelected ? theme.primaryColor : theme.backgroundColor,
             foregroundColor:
                 station.isSelected ? theme.colorScheme.primary : null,
             child: _signalIconFromStrength(station.signalStrength)),

@@ -16,28 +16,12 @@ AppBar buildAppBar(BuildContext context, {String title = 'Road Wave FM'}) {
     return false;
   });
 
-  final popupItems = <PopupMenuEntry<AppBarMenuOption>>[];
   final currentRoute = ModalRoute.of(context)?.settings.name;
-
-  if (currentRoute != appBarMenuOptionScreen[AppBarMenuOption.about]) {
-    popupItems.add(const PopupMenuItem<AppBarMenuOption>(
-      value: AppBarMenuOption.about,
-      child: Text('About'),
-    ));
-  }
-
-  if (currentRoute != appBarMenuOptionScreen[AppBarMenuOption.license]) {
-    popupItems.add(const PopupMenuItem<AppBarMenuOption>(
-      value: AppBarMenuOption.license,
-      child: Text('License'),
-    ));
-  }
-
-  if (popupItems.isNotEmpty) {
+  if (!appBarMenuOptionScreen.containsValue(currentRoute)) {
     actions.add(PopupMenuButton<AppBarMenuOption>(
         icon: const Icon(Icons.menu),
         tooltip: "Open Menu",
-        onSelected: (AppBarMenuOption option) {
+        onSelected: (option) {
           final targetRouteName = appBarMenuOptionScreen[option]!;
           final route = ModalRoute.of(context);
           if (route?.settings.name == targetRouteName) {
@@ -46,7 +30,16 @@ AppBar buildAppBar(BuildContext context, {String title = 'Road Wave FM'}) {
 
           Navigator.pushNamed(context, targetRouteName);
         },
-        itemBuilder: (BuildContext context) => popupItems));
+        itemBuilder: (context) => <PopupMenuEntry<AppBarMenuOption>>[
+              const PopupMenuItem<AppBarMenuOption>(
+                value: AppBarMenuOption.about,
+                child: Text('About'),
+              ),
+              const PopupMenuItem<AppBarMenuOption>(
+                value: AppBarMenuOption.license,
+                child: Text('License'),
+              )
+            ]));
   }
 
   return AppBar(

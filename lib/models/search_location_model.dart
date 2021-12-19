@@ -25,9 +25,7 @@ class SearchLocationModel extends ChangeNotifier {
       final query = SearchQuery(position.latitude, position.longitude,
           formatListModel.selectedFormatIds);
 
-      if (query != _currentQuery) {
-        search(query);
-      }
+      search(query);
     });
   }
 
@@ -41,13 +39,15 @@ class SearchLocationModel extends ChangeNotifier {
       final query =
           SearchQuery.fromQuery(current, formatListModel.selectedFormatIds);
 
-      if (query != current) {
-        search(query);
-      }
+      search(query);
     });
   }
 
   Future<void> search(SearchQuery query) async {
+    if (query == _currentQuery) {
+      return;
+    }
+
     await stationListModel.fetchStations(query);
     _currentQuery = query;
     notifyListeners();
