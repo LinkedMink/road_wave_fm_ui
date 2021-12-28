@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '/models/station_model.dart';
@@ -37,17 +38,16 @@ class StationListTile extends StatelessWidget {
   }
 
   Icon _signalIconFromStrength(double signalStrength) {
-    if (signalStrength < 0.25) {
-      return const Icon(Icons.signal_wifi_0_bar);
-    } /* else if (signalStrength < 0.25) {
-      return const Icon(Icons.signal_wifi_1_bar)
-    } else if (signalStrength < 0.25) {
-      return const Icon(Icons.signal_wifi_2_bar)
-    } else if (signalStrength < 0.25) {
-      return const Icon(Icons.signal_wifi_3_bar)
-    } */
-    else {
-      return const Icon(Icons.signal_wifi_4_bar);
+    if (signalStrength < 0.15) {
+      return const Icon(MdiIcons.wifiStrengthOutline);
+    } else if (signalStrength < 0.4) {
+      return const Icon(MdiIcons.wifiStrength1);
+    } else if (signalStrength < 0.6) {
+      return const Icon(MdiIcons.wifiStrength2);
+    } else if (signalStrength < 0.8) {
+      return const Icon(MdiIcons.wifiStrength3);
+    } else {
+      return const Icon(MdiIcons.wifiStrength4);
     }
   }
 
