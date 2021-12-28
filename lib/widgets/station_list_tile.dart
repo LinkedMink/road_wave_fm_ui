@@ -8,8 +8,11 @@ class StationListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final station = context.watch<StationModel>();
     final theme = Theme.of(context);
+    final station = context.watch<StationModel>();
+    toggleStation() {
+      station.toggle();
+    }
 
     return ListTile(
         leading: CircleAvatar(
@@ -27,11 +30,10 @@ class StationListTile extends StatelessWidget {
             Text('Distance: ${_distanceFormat(station.distance)}')
           ],
         ),
-        trailing: IconButton(icon: const Icon(Icons.map), onPressed: () {}),
+        trailing:
+            IconButton(icon: const Icon(Icons.map), onPressed: toggleStation),
         selected: station.isSelected,
-        onTap: () {
-          station.toggle();
-        });
+        onTap: toggleStation);
   }
 
   Icon _signalIconFromStrength(double signalStrength) {

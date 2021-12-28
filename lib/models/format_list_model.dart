@@ -9,8 +9,7 @@ import '/services/format_service.dart';
 
 class FormatListModel extends ChangeNotifier with LoadingModel {
   final FormatService _formatService;
-  final Set<String> _selectedFormatIds = <String>{};
-  List<Format> _formats = [];
+  Set<String> _selectedFormatIds = <String>{};
   List<FormatModel> _formatModels = [];
   bool _hasModifiedSelected = false;
 
@@ -31,8 +30,8 @@ class FormatListModel extends ChangeNotifier with LoadingModel {
   }
 
   Future<void> restoreSelectedFormats() async {
-    await _loadSelectedFormatsFromPreferences();
-    for (var m in _formatModels) {
+    _selectedFormatIds = await _loadSelectedFormatsFromPreferences();
+    for (final m in _formatModels) {
       m.isSelected = _selectedFormatIds.contains(m.id);
     }
   }
@@ -47,31 +46,28 @@ class FormatListModel extends ChangeNotifier with LoadingModel {
   }
 
   Future<void> _fetchFormatsFunc() async {
-    await Future.wait([_loadFormats(), _loadSelectedFormatsFromPreferences()]);
-    _formatModels = _buildFormatModels(_formats, _selectedFormatIds);
+    final results = await Future.wait(
+        [_formatService.getAll(), _loadSelectedFormatsFromPreferences()]);
+    _selectedFormatIds = results[1] as Set<String>;
+    _formatModels =
+        _buildFormatModels(results[0] as List<Format>, _selectedFormatIds);
   }
 
-  Future<bool> _loadSelectedFormatsFromPreferences() async {
+  Future<Set<String>> _loadSelectedFormatsFromPreferences() async {
     _hasModifiedSelected = false;
-    _selectedFormatIds.clear();
 
     final preferences = await SharedPreferences.getInstance();
     final selectedIds =
         preferences.getStringList(Preference.selectedFormatIds.name);
     if (selectedIds == null) {
-      return false;
+      return {};
     }
 
-    _selectedFormatIds.addAll(selectedIds);
-    return true;
-  }
-
-  Future<void> _loadFormats() async {
-    _formats = await _formatService.getAll();
+    return selectedIds.toSet();
   }
 
   _buildFormatModels(List<Format> formats, Set<String> selectedIds) {
-    final models = _formats.map((f) {
+    final models = formats.map((f) {
       final model = FormatModel(f, selectedIds.contains(f.id));
       _listenFormatModel(model);
       return model;
